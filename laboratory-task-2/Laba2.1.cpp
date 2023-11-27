@@ -1,5 +1,5 @@
 #include <iostream>
-uint64_t powMy(const int& a, const int& b) {
+uint64_t quickPow(const int& a, const int& b) {
 	uint64_t res = static_cast<uint64_t>(a);
 	for (int i = 1; i < b; ++i) {
 		res *= static_cast<uint64_t>(a);
