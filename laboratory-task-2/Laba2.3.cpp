@@ -1,39 +1,42 @@
 #include <iostream>
+#include <iomanip>
 
 
-int factorial(int factor) {
-	int res = 1;
-	for (int i = 1; i <= factor; i++) {
-		res *= i;
+int32_t factorial(int32_t start, int32_t finish) {
+	if (start + 1 == finish) {
+          return start * finish;
+	}else{
+	  return factorial(start, (start + finish) / 2) * factorial(((start + finish) / 2) + 1, finish);
 	}
-	//std::cout << res << '\n';
-	return res;
+}
+
+int32_t getNum(){
+  int32_t num = 0;
+  while (num <= 0) {
+      std::cout << "Enter num = ";
+      std::cin >> num;
+    }
+  return num;
 }
 
 
-
-
-void main() {
-	int num = 0;
-	while (num <= 0) {
-		std::cout << "Enter num = ";
-		std::cin >> num;}
-	int denominator = factorial(num);
-	for (int j = denominator - 1; j > 1; --j) {
-		int numerator = denominator - j;
-		int temp_denominator = denominator;
-		for (int i = denominator; i > 0; --i){
-			if (temp_denominator % i == 0 && numerator % i == 0){
+int main() {	
+        int32_t num = getNum();
+	int32_t denominator = factorial(1, num);
+	for (size_t j = denominator - 1; j > 1; --j) {
+		int32_t numerator = denominator - j;
+		int32_t tempDenominator = denominator;
+		for (size_t i = denominator; i > 0; --i){
+			if (tempDenominator % i == 0 && numerator % i == 0){
 				numerator /= i;
-				temp_denominator /= i;
+				tempDenominator /= i;
 			}
 		}
-		if (temp_denominator <= num) {
-			std::cout << numerator << '/' << temp_denominator << '\t';
+		if (tempDenominator <= num) {
+			std::cout <<std::setw(10)<< numerator << '/' << tempDenominator;
 		}
-	}
+      }
+      return 0;
 } 
-
-
 
 
