@@ -1,31 +1,36 @@
 #include <iostream>
+#include <string>
+#include <exception>
+
+
 void main() {
 	try {
 		setlocale(0, "");
-		std::cout << "введите границы интервалов = ";
-		double a, b;// help;
-		std::cin >> a >> b;
+		std::cout << "Enter borders valeus = ";
+		double a, b;
+		std::string aStr, bStr;
+		std::cin >> aStr >> bStr;
+		a = std::stod(aStr);
+		b = std::stod(bStr);
 		if (b < a) {
-			/*help = a;
-			a = b;
-			b = help;
-			*/
 			std::swap(a, b);
 		}
 		double x;
-		std::cout << "введите х = ";
-		std::cin >> x;
+		std::string xStr;
+		std::cout << "Enter x = ";
+		std::cin >> xStr;
+		x = std::stod(xStr);
 		if (a < x && b > x) {
-			std::cout << "принадлежит интервалу (" << a << ',' << b << ')';
+			std::cout << "x find in interval (" << a << ',' << b << ')';
 		}
 		else if (x < a) {
-			std::cout << "принадлежит интервалу ( " << x << ',' << "<" << a << ')';
+			std::cout << "x find in interval ( " << x << ',' << "<" << a << ')';
 		}
 		else if (x > b) {
-			std::cout << "принадлежит интервалу ( " << x << ',' << ">" << b << ')';
+			std::cout << "x find in interval ( " << x << ',' << ">" << b << ')';
 		}
 	}
-	catch (...) {
-		std::cout << "Ошибка ввода";
+	catch (std::invalid_argument) {
+		std::cout << "Error invalid value";
 	}
 }
