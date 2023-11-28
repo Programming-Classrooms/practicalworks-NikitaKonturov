@@ -3,6 +3,7 @@
 #include <Windows.h>
 #include "WorckWithMatrix.h"
 
+
 void main() {
 	SetConsoleCP(1225);
 	SetConsoleOutputCP(1225);
@@ -11,16 +12,12 @@ void main() {
 	size_t colums = 0;
 	size_t rows = 0;
 	getRowsAndCollows(rows, colums);
-	MatrixDefine(matrix, rows, colums);
+	matrixDefine(matrix, rows, colums);
 	fillingMatrixWithVatiants(matrix, rows, colums);
 	printMatrix(matrix, rows, colums);
 	sumEllementInColumsWithNull(matrix, rows, colums);
 	SortLines(matrix, rows, colums);
 	printMatrix(matrix, rows, colums);
-	delMatrix(matrix, rows);
+	mtrxMemClear(matrix, rows);
 	delete[] matrix;
-
-
-
-	
 }

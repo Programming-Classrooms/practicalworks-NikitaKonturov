@@ -2,7 +2,7 @@
 
 void getRowsAndCollows(size_t & rows, size_t & colums);
 
-void MatrixDefine(int32_t**& matrix, size_t rows, size_t colums);
+void matrixDefine(int32_t**& matrix, size_t rows, size_t colums);
 
 void fillingMatrixFromKeyboard(int32_t** matrix, size_t rows, size_t colums);
 
@@ -20,4 +20,4 @@ void SortLines(int32_t** matrix, size_t rows, size_t colums);
 
 void fillingMatrixWithVatiants(int32_t** matrix, size_t rows, size_t colums);
 
-void delMatrix(int32_t**& matrix, size_t rows);
+void mtrxMemClear(int32_t**& matrix, size_t rows);

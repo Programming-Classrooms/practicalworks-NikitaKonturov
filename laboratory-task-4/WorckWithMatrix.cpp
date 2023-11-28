@@ -17,7 +17,7 @@ void getRowsAndCollows(size_t& rows, size_t& colums) {
 	colums = static_cast<size_t>(columsI);
 }
 
-void MatrixDefine(int32_t**& matrix, size_t rows, size_t colums) {
+void matrixDefine(int32_t**& matrix, size_t rows, size_t colums) {
 	matrix = new int32_t*[rows];
 	for (size_t i = 0; i < rows; ++i){
 		matrix[i] = new int32_t[colums];
@@ -128,7 +128,7 @@ void fillingMatrixWithVatiants(int32_t** matrix, size_t rows, size_t colums) {
 	}
 }
 
-void delMatrix(int32_t**& matrix, size_t rows) {
+void mtrxMemClear(int32_t**& matrix, size_t rows) {
 	for (size_t i = 0; i < rows-1; ++i){
 		delete matrix[i];
 	}
