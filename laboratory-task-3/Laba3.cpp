@@ -1,9 +1,11 @@
 #include <ctime>
 #include <iostream>
 
-void del(int* arr0){
+
+void delArr(int* arr0){
 	delete[] arr0;
 }
+
 
 void swap(int & a, int & b){
 	int help = b;
@@ -11,7 +13,7 @@ void swap(int & a, int & b){
 	a = help;
 }
 
-int input_from_keyboard (int *arr, const int & lenArr){
+void input_from_keyboard (int *arr, const int & lenArr){
 	for (int i = 0; i < lenArr; ++i){
 		int num = 0;
 		while (num <= 0){
@@ -20,10 +22,9 @@ int input_from_keyboard (int *arr, const int & lenArr){
 			arr[i] = num;
 		}
 	}
-return 0;
 }
 
-int input_random(int *arr, const int & lenArr){
+void input_random(int *arr, const int & lenArr){
 	int a = 0, b = 0;
 	while (a == b || a <= 0 || b <= 0){
 		std::cout << "Enter board valuse = ";
@@ -35,7 +36,6 @@ int input_random(int *arr, const int & lenArr){
 	for (int i = 0; i < lenArr; ++i){
 		arr[i] = a + ((rand() % b) + 1);
 	}
-return 0;
 }
 
 void out_arr(int* arr, const int & lenArr){
@@ -148,10 +148,8 @@ int main(){
 
 	}
 	out_arr(new_arr, lenArr);
-	del(arr);
-	del(new_arr);
-
+	delArr(arr);
+	delArr(new_arr);
 	return 0;
-
 }
 	
