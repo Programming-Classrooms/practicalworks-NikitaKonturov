@@ -25,7 +25,8 @@ void copyFiles(std::ifstream &file, std::ofstream &newFile){
 
 int main(){
     try{
-    std::ifstream file ("/home/nikita/Desktop/FolderByWorcsk/WorkWithFies.cpp");
+    const std::string path = "/home/nikita/Desktop/FolderByWorcsk/WorkWithFies.cpp";
+    std::ifstream file (path);
     std::ofstream newFile("WorkWithFiles.txt");
     copyFiles(file, newFile);
     }catch(std::exception &err){
