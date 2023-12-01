@@ -2,16 +2,17 @@
 
 #include <iostream>
 #include <fstream>
+#include <exception>
 
 
-int checkFile(std::ifstream &file){
-    if (!file.is_open()) throw "File unopened";
+void checkFile(std::ifstream &file){
     if (!file) throw "File not founded";
+    if (!file.is_open()) throw "File unopened";
     if (file.eof()) throw "File is epmty";
-    return 0;
 }
 
-int copyFiles(std::ifstream &file, std::ofstream &newFile){
+
+void copyFiles(std::ifstream &file, std::ofstream &newFile){
     checkFile(file);
     std::string text, line;
     while(!file.eof()){
@@ -19,17 +20,16 @@ int copyFiles(std::ifstream &file, std::ofstream &newFile){
         text += line + '\n';
     }
     newFile << text;
-    return 0;
 }
 
 
 int main(){
     try{
     std::ifstream file ("/home/nikita/Desktop/FolderByWorcsk/WorkWithFies.cpp");
-    std::ofstream newFile("WorckWithFiles.txt");
+    std::ofstream newFile("WorkWithFiles.txt");
     copyFiles(file, newFile);
-    }catch(const char* error){
-        std::cout << error;
+    }catch(std::exception &err){
+        std::cerr << "Exeption: "<< err.what() << std::endl;
     } 
     return 0;
 }
