@@ -32,7 +32,7 @@
         "str-name-rus": "Апрув **PR**"
     },
     "branch-deleted": {
-        "is-active": true,
+        "is-active": false,
         "str-name-rus": "Удаление **ветки**"
     }
 }
