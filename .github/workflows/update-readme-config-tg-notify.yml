@@ -3,6 +3,8 @@ on:
   push:
     paths:
       - ".github/workflows/config-tg-notify.json"
+    branches-ignore:
+      - main
 
 # Даннный workflow обновляет раздел с таблицой настроек Телеграмм-уведомлений в README.md.
 # Для этого он (с помощью grep) определяет позиции двух тегов (начала таблицы и её конца).
