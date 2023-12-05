@@ -15,15 +15,18 @@
 <a id=repo_config pos=begin></a>
 |                 Тип уведомления                 |                      |
 |-------------------------------------------------|:--------------------:|
-|  Удаление **ветки**  |  :white_check_mark:  |
+|  Удаление **ветки**  |  :x:  |
 |  Закрытие **PR**  |  :white_check_mark:  |
 |  Слияние **PR**  |  :white_check_mark:  |
-|  Открытие **PR**  |  :white_check_mark:  |
+|  Открытие **PR**  |  :x:  |
 |  Переоткрытие **PR**  |  :white_check_mark:  |
-|  Апрув **PR**  |  :white_check_mark:  |
-|  Запрос изменений в **PR**  |  :white_check_mark:  |
+|  Апрув **PR**  |  :x:  |
+|  Запрос изменений в **PR**  |  :x:  |
 |  Комментирование **PR**  |  :x:  |
-|  Модификация **PR**  |  :white_check_mark:  |
+|  Закрытие **PR** автором  |  :white_check_mark:  |
+|  Слияние **PR** автором  |  :white_check_mark:  |
+|  Переоткрытие **PR** автором  |  :white_check_mark:  |
+|  Модификация **PR**  |  :x:  |
 
 <a id=repo_config pos=end></a>
 
