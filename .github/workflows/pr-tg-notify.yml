@@ -60,9 +60,15 @@ jobs:
           CONFIG_FILE_PATH=".github/workflows/config-tg-notify.json"
           echo -e "PR_OPENED_CONFIG=$(jq -r '.["pr-opened"]["is-active"]' $CONFIG_FILE_PATH)" >> $GITHUB_OUTPUT
           echo -e "PR_SYNCHRONIZE_CONFIG=$(jq -r '.["pr-synchronize"]["is-active"]' $CONFIG_FILE_PATH)" >> $GITHUB_OUTPUT
+          
           echo -e "PR_CLOSED_MERGED_TRUE_CONFIG=$(jq -r '.["pr-closed-merged-true"]["is-active"]' $CONFIG_FILE_PATH)" >> $GITHUB_OUTPUT
+          echo -e "PR_SELF_CLOSED_MERGED_TRUE_CONFIG=$(jq -r '.["pr-self-closed-merged-true"]["is-active"]' $CONFIG_FILE_PATH)" >> $GITHUB_OUTPUT
+          
           echo -e "PR_CLOSED_MERGED_FALSE_CONFIG=$(jq -r '.["pr-closed-merged-false"]["is-active"]' $CONFIG_FILE_PATH)" >> $GITHUB_OUTPUT
+          echo -e "PR_SELF_CLOSED_MERGED_FALSE_CONFIG=$(jq -r '.["pr-self-closed-merged-false"]["is-active"]' $CONFIG_FILE_PATH)" >> $GITHUB_OUTPUT
+          
           echo -e "PR_REOPENED_CONFIG=$(jq -r '.["pr-reopened"]["is-active"]' $CONFIG_FILE_PATH)" >> $GITHUB_OUTPUT
+          echo -e "PR_SELF_REOPENED_CONFIG=$(jq -r '.["pr-self-reopened"]["is-active"]' $CONFIG_FILE_PATH)" >> $GITHUB_OUTPUT
 
 
       - name: Get GitHub->Teleram logins config
@@ -126,13 +132,13 @@ jobs:
         id: get-commits-if-merged
         run: |
           echo "COMMITS_IF_MERGED<<EOF" >> $GITHUB_ENV
-          echo "$(git log ${{ github.event.pull_request.merge_commit_sha }} --not origin/${{ github.base_ref }}~1 --oneline --pretty=format:"%B" | grep -v '^$' | tac | head -n -1 | nl -w 1 -s ' ' | sed 's/^/*/; s/ /.* /')" >> $GITHUB_ENV
+          echo "$(git log ${{ github.event.pull_request.merge_commit_sha }} --not origin/${{ github.base_ref }}~1 --oneline --pretty=format:"%B" | grep -v '^$' | tac | head -n -2 | nl -w 1 -s ' ' | sed 's/^/*/; s/ /.* /')" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
 
 
-        # ПР закрыт, ветки слиты, оповещение в Телеграмм
+        # ПР закрыт НЕ автором этого ПР, ветки слиты, оповещение в Телеграмм
       - name: PR merged TG notify
-        if: steps.get-pr-type.outputs.PR_TYPE == 'closed' && github.event.pull_request.merged == true && steps.get-tg-config.outputs.PR_CLOSED_MERGED_TRUE_CONFIG == 'true'
+        if: steps.get-pr-type.outputs.PR_TYPE == 'closed' && github.event.pull_request.merged == true && github.event.pull_request.user.login != github.actor && steps.get-tg-config.outputs.PR_CLOSED_MERGED_TRUE_CONFIG == 'true'
         uses: appleboy/telegram-action@master
         with:
           to: ${{ secrets.TELEGRAM_PROGRAMMINGBOT_TO }}
@@ -153,9 +159,32 @@ jobs:
             🔗 *Ссылка:*  [тыксюда](${{ github.event.pull_request.html_url }}) 
 
 
-        # ПР закрыт, ветки НЕ слиты, оповещение в Телеграмм
+       # ПР закрыт САМИМ автором этого ПР, ветки слиты, оповещение в Телеграмм
+      - name: PR merged TG notify
+        if: steps.get-pr-type.outputs.PR_TYPE == 'closed' && github.event.pull_request.merged == true && github.event.pull_request.user.login == github.actor && steps.get-tg-config.outputs.PR_SELF_CLOSED_MERGED_TRUE_CONFIG == 'true'
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_PROGRAMMINGBOT_TO }}
+          token: ${{ secrets.TELEGRAM_PROGRAMMINGBOT_TOKEN }}
+          format: markdown
+          message: | #https://help.github.com/en/actions/reference/contexts-and-expression-syntax-for-github-actions#github-context
+            @${{ steps.get-gh-tg-logins-config.outputs.MERGE_AUTHOR_TG_LOGIN }} *вмержил свой Pull Request!* 🎯
+            
+            💻 *Проект:*  ${{ env.REPO_NAME }}
+
+            🏷️ *Имя PR:* ${{ github.event.pull_request.title }}
+            
+            🌿 *Ветки:*  [${{ steps.get-branches-names.outputs.BASE_BRANCH_NAME }}](${{ steps.get-branches-names.outputs.BASE_BRANCH_LINK }}) <-- [${{ steps.get-branches-names.outputs.HEAD_BRANCH_NAME }}](${{ steps.get-branches-names.outputs.HEAD_BRANCH_LINK }})
+            
+            📌 *Коммиты:* 
+            ${{ env.COMMITS_IF_MERGED }}
+            
+            🔗 *Ссылка:*  [тыксюда](${{ github.event.pull_request.html_url }}) 
+
+
+        # ПР закрыт НЕ автором этого ПР, ветки НЕ слиты, оповещение в Телеграмм
       - name: PR declined TG notify
-        if: steps.get-pr-type.outputs.PR_TYPE == 'closed' && github.event.pull_request.merged == false && steps.get-tg-config.outputs.PR_CLOSED_MERGED_FALSE_CONFIG == 'true'
+        if: steps.get-pr-type.outputs.PR_TYPE == 'closed' && github.event.pull_request.merged == false && github.event.pull_request.user.login != github.actor && steps.get-tg-config.outputs.PR_CLOSED_MERGED_FALSE_CONFIG == 'true'
         uses: appleboy/telegram-action@master
         with:
           to: ${{ secrets.TELEGRAM_PROGRAMMINGBOT_TO }}
@@ -175,9 +204,29 @@ jobs:
             🔗 *Ссылка:*  [тыксюда](${{ github.event.pull_request.html_url }}) 
 
 
-        # ПР переоткрыт, оповещение в Телеграмм
+      # ПР закрыт САМИМ автором этого ПР, ветки НЕ слиты, оповещение в Телеграмм
+      - name: PR declined TG notify
+        if: steps.get-pr-type.outputs.PR_TYPE == 'closed' && github.event.pull_request.merged == false && github.event.pull_request.user.login == github.actor && steps.get-tg-config.outputs.PR_SELF_CLOSED_MERGED_FALSE_CONFIG == 'true'
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_PROGRAMMINGBOT_TO }}
+          token: ${{ secrets.TELEGRAM_PROGRAMMINGBOT_TOKEN }}
+          format: markdown
+          message: | #https://help.github.com/en/actions/reference/contexts-and-expression-syntax-for-github-actions#github-context
+            @${{ steps.get-gh-tg-logins-config.outputs.PR_AUTHOR_TG_LOGIN }}, *закрыл свой Pull Request без слияния веток* 🚫
+            
+            💻 *Проект:*  ${{ env.REPO_NAME }}
+
+            🏷️ *Имя PR:* ${{ github.event.pull_request.title }}
+            
+            🌿 *Ветки:*  [${{ steps.get-branches-names.outputs.BASE_BRANCH_NAME }}](${{ steps.get-branches-names.outputs.BASE_BRANCH_LINK }}) <-- [${{ steps.get-branches-names.outputs.HEAD_BRANCH_NAME }}](${{ steps.get-branches-names.outputs.HEAD_BRANCH_LINK }})
+            
+            🔗 *Ссылка:*  [тыксюда](${{ github.event.pull_request.html_url }}) 
+
+
+        # ПР переоткрыт НЕ автором этого ПР, оповещение в Телеграмм
       - name: PR reopened TG notify
-        if: steps.get-pr-type.outputs.PR_TYPE == 'reopened' && steps.get-tg-config.outputs.PR_REOPENED_CONFIG == 'true'
+        if: steps.get-pr-type.outputs.PR_TYPE == 'reopened' && github.event.pull_request.user.login != github.actor && steps.get-tg-config.outputs.PR_REOPENED_CONFIG == 'true'
         uses: appleboy/telegram-action@master
         with:
           to: ${{ secrets.TELEGRAM_PROGRAMMINGBOT_TO }}
@@ -195,4 +244,23 @@ jobs:
             🔓 *Открыл:* @${{ steps.get-gh-tg-logins-config.outputs.ACTOR_TG_LOGIN }}
             
             🔗 *Ссылка:*  [тыксюда](${{ github.event.pull_request.html_url }})
-        
+
+
+        # ПР переоткрыт САМИМ автором этого ПР, оповещение в Телеграмм
+      - name: PR reopened TG notify
+        if: steps.get-pr-type.outputs.PR_TYPE == 'reopened' && github.event.pull_request.user.login == github.actor && steps.get-tg-config.outputs.PR_SELF_REOPENED_CONFIG == 'true'
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_PROGRAMMINGBOT_TO }}
+          token: ${{ secrets.TELEGRAM_PROGRAMMINGBOT_TOKEN }}
+          format: markdown
+          message: | #https://help.github.com/en/actions/reference/contexts-and-expression-syntax-for-github-actions#github-context
+            @${{ steps.get-gh-tg-logins-config.outputs.PR_AUTHOR_TG_LOGIN }}, *снова открыл свой Pull Request!* 🕊️
+            
+            💻 *Проект:*  ${{ env.REPO_NAME }}
+
+            🏷️ *Имя PR:* ${{ github.event.pull_request.title }}
+            
+            🌿 *Ветки:*  [${{ steps.get-branches-names.outputs.BASE_BRANCH_NAME }}](${{ steps.get-branches-names.outputs.BASE_BRANCH_LINK }}) <-- [${{ steps.get-branches-names.outputs.HEAD_BRANCH_NAME }}](${{ steps.get-branches-names.outputs.HEAD_BRANCH_LINK }})
+            
+            🔗 *Ссылка:*  [тыксюда](${{ github.event.pull_request.html_url }})
