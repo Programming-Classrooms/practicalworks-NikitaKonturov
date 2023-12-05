@@ -3,21 +3,21 @@
 #include <functional>
 #include <iomanip>
 
-double arctang(double x) { // первая подинтегральная функция
+double arctang(double x) { // first functin
 	return (x * std::atan(x));
 }
 
-double difference(double x) { // вторая подинтегральная функция
+double difference(double x) { // second function
 	return (1 / (1 + sqrt(x)));
 }
 
-double diffirenceToSecond(double x) { // третяя подинтегральная функция
+double diffirenceToSecond(double x) { // third function
 	return (2 / (1 - 4 * x));
 }
 
 
 
-double InegrTrapecia(const std::function<double(double)>&f, double a, double b, double eps) { // формула трапеций
+double InegrTrapecia(const std::function<double(double)>&f, double a, double b, double eps) { // trapezoid metСЂod  
 	uint64_t n = 4;
 	double weight = 0;
 	double x1 = 0, x2 = 0;
@@ -37,7 +37,7 @@ double InegrTrapecia(const std::function<double(double)>&f, double a, double b, 
 	return s2;
 }
 
-double rightIntegral(const std::function<double(double)>&f, double a, double b, double eps) { // метод правых прямоугольников
+double rightIntegral(const std::function<double(double)>&f, double a, double b, double eps) { // right rectangle metods
 	uint64_t n = 8;
 	double weight = 0.0;
 	double x = 0.0;
@@ -56,7 +56,7 @@ double rightIntegral(const std::function<double(double)>&f, double a, double b, 
 	return s2;
 }
 
-double summIntegral(const std::function<double(double)>&f, uint64_t n, double a, double b) { // вычисление интеграла по методу Симпсона
+double summIntegral(const std::function<double(double)>&f, uint64_t n, double a, double b) { // sum parabolic trapezoids for Simpson method
 	double weight = (b - a) / n;
 	double sumEven = 0;
 	double sumUnEven = 0;
