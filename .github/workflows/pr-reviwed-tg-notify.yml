@@ -39,12 +39,11 @@ jobs:
         # Формирование комментария ревью (в случае пустого комментария, поле "Коммент" будет отсутствовать)
       - name: Get review body
         id: get-review-body
+        env:
+          COMMENT: ${{ github.event.review.body }}
         run: |
-          if [[ -n "${{ github.event.review.body }}" ]]; then
-            REVIEW_BODY=""
-            REVIEW_BODY+="\n"
-            REVIEW_BODY+="💬 *Коммент:* ${{ github.event.review.body }}"
-            REVIEW_BODY+="\n"
+          if [[ -n "$COMMENT" ]]; then
+            REVIEW_BODY="\n💬 *Коммент:* $COMMENT \n"
 
             echo "REVIEW_BODY<<EOF" >> $GITHUB_ENV
             echo -e $REVIEW_BODY >> $GITHUB_ENV
