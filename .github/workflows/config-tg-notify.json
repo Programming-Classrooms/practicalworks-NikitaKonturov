@@ -1,4 +1,4 @@
-{
+{ 
     "pr-opened": {
         "is-active": true,
         "str-name-rus": "Открытие **PR**"
@@ -11,13 +11,25 @@
         "is-active": true,
         "str-name-rus": "Слияние **PR**"
     },
+    "pr-self-closed-merged-true": {
+        "is-active": false,
+        "str-name-rus": "Слияние **PR** автором"
+    },
     "pr-closed-merged-false": {
         "is-active": true,
         "str-name-rus": "Закрытие **PR**"
     },
+    "pr-self-closed-merged-false": {
+        "is-active": false,
+        "str-name-rus": "Закрытие **PR** автором" 
+    },
     "pr-reopened": {
         "is-active": true,
         "str-name-rus": "Переоткрытие **PR**"
+    },
+    "pr-self-reopened": {
+        "is-active": true,
+        "str-name-rus": "Переоткрытие **PR** автором"
     },
     "pr-review-changes-requested": {
         "is-active": true,
@@ -32,7 +44,7 @@
         "str-name-rus": "Апрув **PR**"
     },
     "branch-deleted": {
-        "is-active": true,
+        "is-active": false,
         "str-name-rus": "Удаление **ветки**"
     }
 }
