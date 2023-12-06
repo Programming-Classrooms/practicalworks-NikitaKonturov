@@ -18,15 +18,15 @@
 |  Удаление **ветки**  |  :x:  |
 |  Закрытие **PR**  |  :white_check_mark:  |
 |  Слияние **PR**  |  :white_check_mark:  |
-|  Открытие **PR**  |  :x:  |
+|  Открытие **PR**  |  :white_check_mark:  |
 |  Переоткрытие **PR**  |  :white_check_mark:  |
-|  Апрув **PR**  |  :x:  |
-|  Запрос изменений в **PR**  |  :x:  |
+|  Апрув **PR**  |  :white_check_mark:  |
+|  Запрос изменений в **PR**  |  :white_check_mark:  |
 |  Комментирование **PR**  |  :x:  |
-|  Закрытие **PR** автором  |  :white_check_mark:  |
-|  Слияние **PR** автором  |  :white_check_mark:  |
+|  Закрытие **PR** автором  |  :x:  |
+|  Слияние **PR** автором  |  :x:  |
 |  Переоткрытие **PR** автором  |  :white_check_mark:  |
-|  Модификация **PR**  |  :x:  |
+|  Модификация **PR**  |  :white_check_mark:  |
 
 <a id=repo_config pos=end></a>
 
