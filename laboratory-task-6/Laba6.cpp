@@ -9,10 +9,16 @@
 
 
 bool checkFile(std::ifstream& file, std::string path) {
-    if (!file) {throw std::exception("File not founded. Path " + path);}
-    if (!file.is_open()) {throw std::exception("File unopened. Path " + path);}
-    if (file.eof()){ throw std::exception("File is epmty. Path " + path);}
-    if (file.peek()){ throw std::exception("File is epmty. Path " + path);}
+    if (!file) {
+        throw std::exception("File not founded. Path " + path);
+    }
+    if (!file.is_open()) {
+        throw std::exception("File unopened. Path " + path);
+    }
+    if (file.peek() == EOF){ 
+        throw std::exception("File is epmty. Path " + path);
+        file.close();
+    }
     return true;
 }
 
@@ -31,7 +37,7 @@ std::string getPath() {
 // filling an array from the keyboard
 template<typename T>
 void fillingArrFromKeyboard(T* arr, size_t lenArr) {  
-    std::cout << "Зlease enter element: \n";
+    std::cout << "Please enter element: \n";
     for (size_t i = 0; i < lenArr; ++i) {
         std::cin >> arr[i];
     }
@@ -92,7 +98,7 @@ template <typename T>
 void quickSort(T* array, size_t leftBoard, size_t rightBoard) {
     size_t start = leftBoard;
     size_t finish = rightBoard;
-    typeArr pivot = array[(start + finish) / 2];
+    T pivot = array[(start + finish) / 2];
     while (start <= finish){
         while (array[start] < pivot)
             start++;
@@ -196,13 +202,13 @@ void deleteArr(T* arr) {
 void inputFromFileAndOutputToConsole() {
     std::string wayToFile = getPath();
     std::string line = "", text = "";
-    std::ifstream file(wayToFile);
-    if (checkFile(file, wayToFile)) {
-        while (std::getline(file, line)) {
+    std::ifstream fin(wayToFile);
+    if (checkFile(fin, wayToFile)) {
+        while (std::getline(fin, line)) {
             text += line;
         }
     }
-    file.close();
+    fin.close();
     size_t lenArr = text.size();
     char* arr = new char[lenArr];
     for (size_t i = 0; i < lenArr; ++i) {
@@ -251,7 +257,7 @@ void inputFromConsoleAndOutputToFile() {
     size_t typeArr = static_cast<size_t>(std::stoi(typeArrText));
     size_t indexSearhingEll = 0;
     if (typeArr == 1) {
-        int* arr = new int[lenArr];
+        int32_t* arr = new int32_t[lenArr];
         fillingArrFromKeyboard(arr, lenArr);
         quickSort(arr, 0, lenArr - 1);
         outArr(arr, lenArr);
@@ -282,7 +288,7 @@ void inputFromRandomAndOutToFile() {
     size_t typeArr = static_cast<size_t>(std::stoi(typeArrText));
     size_t indexSearhingEll = 0;
     if (typeArr == 1) {
-        int* arr = new int[lenArr];
+        int32_t* arr = new int32_t[lenArr];
         inputRandom(arr, lenArr);
         outArr(arr, lenArr);
         quickSort(arr, 0, lenArr - 1);
