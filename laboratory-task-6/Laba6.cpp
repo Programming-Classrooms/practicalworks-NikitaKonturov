@@ -8,81 +8,79 @@
 #include <execution>
 
 
-bool checkFile(std::ifstream& file) {
-    if (!file) throw std::exception("File not founded");
-    if (!file.is_open()) throw std::exception("File unopened");
-    if (file.eof()) throw std::exception("File is epmty");
-    std::string text;
-    std::string line;
-    while (!file.eof()) {
-        std::getline(file, line);
-        text += line;
-    }
-    if (text.size() == 0) throw std::exception("File is epmty");
+bool checkFile(std::ifstream& file, std::string path) {
+    if (!file) {throw std::exception("File not founded. Path " + path);}
+    if (!file.is_open()) {throw std::exception("File unopened. Path " + path);}
+    if (file.eof()){ throw std::exception("File is epmty. Path " + path);}
+    if (file.peek()){ throw std::exception("File is epmty. Path " + path);}
     return true;
 }
 
 
-std::string get_path() {
+std::string getPath() {
     std::string path;
     std::cout << "Please enter path to file";
     std::cin >> path;
     for (size_t i = 0; i < path.size(); i++) {
-        if (path[i] == '\\') path[i] = '/';
+        if (path[i] == '\\'){ path[i] = '/';}
     }
     return path;
 }
 
 
-template<typename typeArr>
-void fillingArrFromKeyboard(typeArr* arr, size_t lenArr) {  // filling array from keyboard
-    std::cout << "Please enter ellemen: \n";
+// filling an array from the keyboard
+template<typename T>
+void fillingArrFromKeyboard(T* arr, size_t lenArr) {  
+    std::cout << "Зlease enter element: \n";
     for (size_t i = 0; i < lenArr; ++i) {
         std::cin >> arr[i];
     }
 }
 
 
-void input_random(int32_t* arr, const size_t& lenArr) { //  for int 
-    int32_t a = 0, b = 0;
+//  for int 
+void inputRandom(int32_t* arr, const size_t lenArr) { 
+    int32_t leftBoard = 0, rightBoard = 0;
     std::cout << "Enter board valuse = ";
-    std::cin >> a >> b;
-    if (a > b) {
-        std::swap(a, b);
+    std::cin >> leftBoard >> rightBoard;
+    if (leftBoard > rightBoard) {
+        std::swap(leftBoard, rightBoard);
     }
     for (size_t i = 0; i < lenArr; ++i) {
-        arr[i] = rand() % (b + a);
+        arr[i] = rand() % (rightBoard - leftBoard + 1) + leftBoard;
     }
 }
 
 
-void input_random(double* arr, const size_t& lenArr) { //  for double
-    double a = 0, b = 0;
+//  for double
+void inputRandom(double* arr, const size_t lenArr) { 
+    double leftBoard = 0, rightBoard = 0;
     std::cout << "Enter board valuse = ";
-    std::cin >> a >> b;
-    if (a > b) {
-        std::swap(a, b);
+    std::cin >> leftBoard >> rightBoard;
+    if (leftBoard > rightBoard) {
+        std::swap(leftBoard, rightBoard);
     }
     for (size_t i = 0; i < lenArr; ++i) {
-        arr[i] = static_cast<double>(rand()) / RAND_MAX * (b-a) + a;
+        arr[i] = static_cast<double>(rand()) / RAND_MAX * (rightBoard-leftBoard) + leftBoard;
     }
 }
 
 
-void input_random(char* arr, const size_t& lenArr) { //  for char
+//  for char
+void inputRandom(char* arr, const size_t lenArr) { 
     std::cout << "Enter board values in table ASCII code";
     int32_t leftBoard, rightBoard;
     std::cin >> leftBoard >> rightBoard;
     if (leftBoard < 0 || leftBoard > 255 || rightBoard < 0 || rightBoard > 255) throw std::exception("Invalid borders...");
     if (rightBoard < leftBoard) std::swap(leftBoard, rightBoard);
     for (size_t i = 0; i < lenArr; ++i) {
-        arr[i] = static_cast<char>(rand() % (rightBoard + leftBoard));
+        arr[i] = static_cast<char>(rand() % (rightBoard - leftBoard + 1) + leftBoard);
     }
 }
 
 
-template <typename typeArr>
-void out_arr(typeArr* arr, const size_t& lenArr) {
+template <typename T>
+void outArr(T* arr, const size_t lenArr) {
     for (size_t i = 0; i < lenArr; ++i) {
         std::cout << std::setprecision(10) << arr[i] << ' ';
     }
@@ -90,13 +88,12 @@ void out_arr(typeArr* arr, const size_t& lenArr) {
 }
 
 
-template <typename typeArr>
-void quickSort(typeArr* array, size_t leftBoard, size_t rightBoard) {
+template <typename T>
+void quickSort(T* array, size_t leftBoard, size_t rightBoard) {
     size_t start = leftBoard;
     size_t finish = rightBoard;
     typeArr pivot = array[(start + finish) / 2];
-    while (start <= finish)
-    {
+    while (start <= finish){
         while (array[start] < pivot)
             start++;
         while (array[finish] > pivot)
@@ -115,42 +112,70 @@ void quickSort(typeArr* array, size_t leftBoard, size_t rightBoard) {
 }
 
 
-template<typename TypeArr> // temlate for int, double,char
-size_t BinareSearch(TypeArr* arr, size_t lenArr, TypeArr ell) {
-    size_t left_board = 0;
-    size_t right_board = lenArr - 1;
+// temlate for int,char
+template<typename T> 
+int32_t binareSearch(T* arr, size_t lenArr, T ell) {
+    size_t leftBoard = 0;
+    size_t rightBoard = lenArr - 1;
     size_t mid = 0;
-    bool IsEll = false;
-    double eps = 0.1;
-    if (typeid(TypeArr) == typeid(double)) {
-        std::cout << "Please enter eps: ";
-        std::string epsText;
-        std::cin >> epsText;
-        eps = std::stod(epsText); // this method is it check value to doble type
-    }
-    while (left_board <= right_board && IsEll != true) {
-        mid = (left_board + right_board) / 2;
-        if (std::fabs(arr[mid] - ell) < eps) {
-            IsEll = true;
+    bool isEll = false;
+    while (leftBoard <= rightBoard && IsEll != true) {
+        mid = (leftBoard + rightBoard) / 2;
+        if (arr[mid] == ell)  {
+            isEll = true;
             break;
         }
-        if (static_cast<TypeArr>(arr[mid]) < ell) {
-            left_board = mid + 1;
+        if (arr[mid] < ell) {
+            leftBoard = mid + 1;
         }
-        if (static_cast<TypeArr>(arr[mid]) > ell) {
-            right_board = mid - 1;
+        if (arr[mid] > ell) {
+            rightBoard = mid - 1;
         }
     }
-    if (IsEll) {
+    if (isEll) {
         return mid;
     }
     else {
-        throw "Error element not founded...";
+        return -1;
     }
 }
 
 
-size_t input_lenArr() {
+//specialization for double
+template<>
+int32_t binareSearch(double* arr, size_t lenArr, double ell) {
+    size_t leftBoard = 0;
+    size_t rightBoard = lenArr - 1;
+    size_t mid = 0;
+    bool isEll = false;
+    double eps = 0.1;
+    std::cout << "Please enter eps: ";
+    std::string epsText;
+    std::cin >> epsText;
+    eps = std::stod(epsText); // this method is it check value to doble type
+    while (leftBoard <= rightBoard && IsEll != true) {
+        mid = (leftBoard + rightBoard) / 2;
+        if (std::fabs(arr[mid] - ell) < eps) {
+            isEll = true;
+            break;
+        }
+        if (arr[mid] < ell) {
+            leftBoard = mid + 1;
+        }
+        if (arr[mid] > ell) {
+            rightBoard = mid - 1;
+        }
+    }
+    if (isEll) {
+        return mid;
+    }
+    else {
+        return -1;
+    }
+}
+
+
+size_t inputLenArr() {
     std::string lenArr = "0";
     int32_t lenArrControl = std::stoi(lenArr);
     while (lenArrControl <= 0) {
@@ -162,17 +187,17 @@ size_t input_lenArr() {
 }
 
 
-template<typename typeArr>
-void del(typeArr* arr) {
+template<typename T>
+void deleteArr(T* arr) {
     delete[] arr;
 }
 
 
-void InputFromFileAndOutputToConsole() {
-    std::string wayToFile = get_path();
+void inputFromFileAndOutputToConsole() {
+    std::string wayToFile = getPath();
     std::string line = "", text = "";
     std::ifstream file(wayToFile);
-    if (checkFile(file)) {
+    if (checkFile(file, wayToFile)) {
         while (std::getline(file, line)) {
             text += line;
         }
@@ -184,38 +209,42 @@ void InputFromFileAndOutputToConsole() {
         arr[i] = text[i];
     }
 
-    out_arr(arr, lenArr);
+    outArr(arr, lenArr);
     quickSort(arr, 0, lenArr - 1);
-    out_arr(arr, lenArr);
+    outArr(arr, lenArr);
     char ell = ' ';
     std::cin >> ell;
-    std::cout << BinareSearch(arr, lenArr, ell);
-    del(arr);
+    std::cout << binareSearch(arr, lenArr, ell);
+    deleteArr(arr);
 }
 
 
-template<typename typeArr>
-void writingInFile(typeArr* arr, size_t lenArr) {
+template<typename T>
+void writingInFile(T* arr, size_t lenArr) {
     std::cout << "Please enter searhing ellement: ";
-    typeArr searchingEll;
+    T searchingEll;
     std::cin >> searchingEll;
-    std::ofstream out;
-    out.open("result.txt");
+    std::ofstream out("result.txt");
     out.imbue(std::locale(""));
-    size_t indexSearhingEll = BinareSearch(arr, lenArr, searchingEll);
+    int32_t indexSearhingEll = binareSearch(arr, lenArr, searchingEll);
+
     if (out.is_open()) {
-        out << "In array \n|";
-        for (size_t i = 0; i < lenArr; ++i) {
-            out << arr[i] << '|';
+        if (indexSearhingEll == -1){
+            out << "Ellement was not founded";
+        }else{
+            out << "In array \n|";
+            for (size_t i = 0; i < lenArr; ++i) {
+                out << arr[i] << '|';
+             }
+            out << "\nEllement " << searchingEll << " has index " << indexSearhingEll;
         }
-        out << "\nEllement " << searchingEll << " has index " << indexSearhingEll;
     }
     out.close();
 }
 
 
-void InputFromConsoleAndOutputToFile() {
-    size_t lenArr = input_lenArr();
+void inputFromConsoleAndOutputToFile() {
+    size_t lenArr = inputLenArr();
     std::cout << "PLease select type of array: |int -- 1|double -- 2|char -- 3|: ";
     std::string typeArrText;
     std::cin >> typeArrText;
@@ -225,28 +254,28 @@ void InputFromConsoleAndOutputToFile() {
         int* arr = new int[lenArr];
         fillingArrFromKeyboard(arr, lenArr);
         quickSort(arr, 0, lenArr - 1);
-        out_arr(arr, lenArr);
+        outArr(arr, lenArr);
         writingInFile(arr, lenArr);
     }
     else if (typeArr == 2) {
         double* arr = new double[lenArr];
         fillingArrFromKeyboard(arr, lenArr);
         quickSort(arr, 0, lenArr - 1);
-        out_arr(arr, lenArr);
+        outArr(arr, lenArr);
         writingInFile(arr, lenArr);
     }
     else {
         char* arr = new char[lenArr];
         fillingArrFromKeyboard(arr, lenArr);
         quickSort(arr, 0, lenArr - 1);
-        out_arr(arr, lenArr);
+        outArr(arr, lenArr);
         writingInFile(arr, lenArr);
     }
 }
 
 
-void InputFromRandomAndOutToFile() {
-    size_t lenArr = input_lenArr();
+void inputFromRandomAndOutToFile() {
+    size_t lenArr = inputLenArr();
     std::cout << "PLease select type of array: |int -- 1|double -- 2|char -- 3|: ";
     std::string typeArrText;
     std::cin >> typeArrText;
@@ -254,26 +283,26 @@ void InputFromRandomAndOutToFile() {
     size_t indexSearhingEll = 0;
     if (typeArr == 1) {
         int* arr = new int[lenArr];
-        input_random(arr, lenArr);
-        out_arr(arr, lenArr);
+        inputRandom(arr, lenArr);
+        outArr(arr, lenArr);
         quickSort(arr, 0, lenArr - 1);
-        out_arr(arr, lenArr);
+        outArr(arr, lenArr);
         writingInFile(arr, lenArr);
     }
     else if (typeArr == 2) {
         double* arr = new double[lenArr];
-        input_random(arr, lenArr);
-        out_arr(arr, lenArr);
+        inputRandom(arr, lenArr);
+        outArr(arr, lenArr);
         quickSort(arr, 0, lenArr - 1);
-        out_arr(arr, lenArr);
+        outArr(arr, lenArr);
         writingInFile(arr, lenArr);
     }
     else {
         char* arr = new char[lenArr];
-        input_random(arr, lenArr);
-        out_arr(arr, lenArr);
+        inputRandom(arr, lenArr);
+        outArr(arr, lenArr);
         quickSort(arr, 0, lenArr - 1);
-        out_arr(arr, lenArr);
+        outArr(arr, lenArr);
         writingInFile(arr, lenArr);
     }
 }
@@ -285,20 +314,20 @@ int main() {
         SetConsoleCP(1225);
         SetConsoleOutputCP(1225);
         srand(time(0));
-        void (*funcTypeOfWorcking[3])() = { InputFromConsoleAndOutputToFile, InputFromRandomAndOutToFile, InputFromFileAndOutputToConsole };
+        void (*funcTypeOfWorcking[3])() = { inputFromConsoleAndOutputToFile, inputFromRandomAndOutToFile, inputFromFileAndOutputToConsole };
         std::cout << "Please select a type of of worcking |Input from console and output to file -> 0|Random generation and out to file -> 1|Input from file and output to console -> 2|\n";
-        uint32_t TypeOfWorking = 3;
-        std::string TypeOfWorkingText;
-        std::cin >> TypeOfWorkingText;
-        TypeOfWorking = static_cast<uint32_t>(std::stoi(TypeOfWorkingText));
-        if (TypeOfWorking > 2) { throw "This type not exist..."; }
-        funcTypeOfWorcking[TypeOfWorking]();
+        uint32_t typeOfWorking = 3;
+        std::string typeOfWorkingText;
+        std::cin >> typeOfWorkingText;
+        typeOfWorking = static_cast<uint32_t>(std::stoi(typeOfWorkingText));
+        if (typeOfWorking > 2) { throw "This type not exist..."; }
+        funcTypeOfWorcking[typeOfWorking]();
     }
     catch (std::invalid_argument) {
         std::cout << "Error invalid value...";
     }
     catch (std::exception &err) {
-        std::cout << err.what() << std::endl;
+        std::cerr << err.what() << std::endl;
     }
     catch (std::system_error) {
         std::cout << "Problem with file...";
