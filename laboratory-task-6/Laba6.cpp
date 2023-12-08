@@ -86,11 +86,10 @@ void inputRandom(char* arr, const size_t lenArr) {
 
 
 template <typename T>
-void outArr(T* arr, const size_t lenArr) {
+void outArr(T* arr, const size_t lenArr, const size_t prescision) {
     for (size_t i = 0; i < lenArr; ++i) {
-        std::cout << std::setprecision(10) << arr[i] << ' ';
+        std::cout << std::setprecision(prescision) << arr[i] << ' ';
     }
-    std::cout << '\n';
 }
 
 
@@ -215,9 +214,9 @@ void inputFromFileAndOutputToConsole() {
         arr[i] = text[i];
     }
 
-    outArr(arr, lenArr);
+    outArr(arr, lenArr, 10);
     quickSort(arr, 0, lenArr - 1);
-    outArr(arr, lenArr);
+    outArr(arr, lenArr, 10);
     char ell = ' ';
     std::cin >> ell;
     std::cout << binareSearch(arr, lenArr, ell);
@@ -260,21 +259,21 @@ void inputFromConsoleAndOutputToFile() {
         int32_t* arr = new int32_t[lenArr];
         fillingArrFromKeyboard(arr, lenArr);
         quickSort(arr, 0, lenArr - 1);
-        outArr(arr, lenArr);
+        outArr(arr, lenArr, 10);
         writingInFile(arr, lenArr);
     }
     else if (typeArr == 2) {
         double* arr = new double[lenArr];
         fillingArrFromKeyboard(arr, lenArr);
         quickSort(arr, 0, lenArr - 1);
-        outArr(arr, lenArr);
+        outArr(arr, lenArr, 10);
         writingInFile(arr, lenArr);
     }
     else {
         char* arr = new char[lenArr];
         fillingArrFromKeyboard(arr, lenArr);
         quickSort(arr, 0, lenArr - 1);
-        outArr(arr, lenArr);
+        outArr(arr, lenArr, 10);
         writingInFile(arr, lenArr);
     }
 }
@@ -290,25 +289,25 @@ void inputFromRandomAndOutToFile() {
     if (typeArr == 1) {
         int32_t* arr = new int32_t[lenArr];
         inputRandom(arr, lenArr);
-        outArr(arr, lenArr);
+        outArr(arr, lenArr, 10);
         quickSort(arr, 0, lenArr - 1);
-        outArr(arr, lenArr);
+        outArr(arr, lenArr, 10);
         writingInFile(arr, lenArr);
     }
     else if (typeArr == 2) {
         double* arr = new double[lenArr];
         inputRandom(arr, lenArr);
-        outArr(arr, lenArr);
+        outArr(arr, lenArr, 10);
         quickSort(arr, 0, lenArr - 1);
-        outArr(arr, lenArr);
+        outArr(arr, lenArr, 10);
         writingInFile(arr, lenArr);
     }
     else {
         char* arr = new char[lenArr];
         inputRandom(arr, lenArr);
-        outArr(arr, lenArr);
+        outArr(arr, lenArr, 10);
         quickSort(arr, 0, lenArr - 1);
-        outArr(arr, lenArr);
+        outArr(arr, lenArr, 10);
         writingInFile(arr, lenArr);
     }
 }
