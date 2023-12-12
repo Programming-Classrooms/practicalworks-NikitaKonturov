@@ -1,102 +1,112 @@
+/*Вычислить значение определенного интеграла с аналитически заданной подынтегральной
+функцией с заданной точностью eps
+Б) по формуле правых прямоугольников;
+Д) по формуле Симпсона (параболических трапеций).
+*/
 #include <iostream>
 #include <cmath>
 #include <functional>
 #include <iomanip>
 
+
 double arctang(double x) { // first functin
 	return (x * std::atan(x));
 }
 
+
 double difference(double x) { // second function
 	return (1 / (1 + sqrt(x)));
 }
+
 
 double diffirenceToSecond(double x) { // third function
 	return (2 / (1 - 4 * x));
 }
 
 
-
-double InegrTrapecia(const std::function<double(double)>&f, double a, double b, double eps) { // trapezoid metрod  
-	uint64_t n = 4;
-	double weight = 0;
+double trapezoidMethod(const std::function<double(double)>&f, double leftBoardOfInegration, double rightBoardOfInegration, double eps) { // trapezoid metрod  
+	uint64_t partition = 4;
+	double width = 0;
 	double x1 = 0, x2 = 0;
 	double s1 = 0;
-	double s2 = 0.5 * (f(a) + f(b)) * (b - a);
+	double s2 = 0.5 * (f(leftBoardOfInegration) + f(rightBoardOfInegration)) * (rightBoardOfInegration - leftBoardOfInegration);
 	do {
 		s1 = s2;
-		n *= 2;
-		weight = (b - a) / n;
+		partition *= 2;
+		width = (rightBoardOfInegration - leftBoardOfInegration) / partition;
 		s2 = 0;
-		for (int step = 0; step < n; ++step) {
-			x1 = a + step * weight;
-			x2 = a + (step + 1) * weight;
+		for (int step = 0; step < partition; ++step) {
+			x1 = leftBoardOfInegration + step * width;
+			x2 = leftBoardOfInegration + (step + 1) * width;
 			s2 += 0.5 * (x2 - x1) * (f(x1) + f(x2));
 		}
 	} while (fabs(s1 - s2) > eps);
 	return s2;
 }
 
-double rightIntegral(const std::function<double(double)>&f, double a, double b, double eps) { // right rectangle metods
-	uint64_t n = 8;
-	double weight = 0.0;
+
+double metрodRightRectangle(const std::function<double(double)>&f, double leftBoardOfInegration, double rightBoardOfInegration, double eps) { // right rectangle metрods
+	uint64_t partition = 8;
+	double width = 0.0;
 	double x = 0.0;
 	double s1 = 0.0;
-	double s2 = f(b) * (b - a);
+	double s2 = f(rightBoardOfInegration) * (rightBoardOfInegration - leftBoardOfInegration);
 	while (fabs(s1 - s2) >= eps) {
 		s1 = s2;
 		s2 = 0.0;
-		n *= 2;
-		weight = (b - a) / n;
-		for (int step = 0; step <= n; ++step) {
-			x = a + step * weight;
-			s2 += weight * f(x);
+		partition *= 2;
+		width = (rightBoardOfInegration - leftBoardOfInegration) / partition;
+		for (int step = 0; step <= partition; ++step) {
+			x = leftBoardOfInegration + step * width;
+			s2 += width * f(x);
 		}
 	}
 	return s2;
 }
 
-double summIntegral(const std::function<double(double)>&f, uint64_t n, double a, double b) { // sum parabolic trapezoids for Simpson method
-	double weight = (b - a) / n;
+
+double summIntegral(const std::function<double(double)>&f, uint64_t partition, double leftBoardOfInegration, double rightBoardOfInegration) { // sum parabolic trapezoids for Simpson method
+	double width = (rightBoardOfInegration - leftBoardOfInegration) / partition;
 	double sumEven = 0;
 	double sumUnEven = 0;
-	for (uint64_t i = 1; i < n; ++i) {
+	for (uint64_t i = 1; i < partition; ++i) {
 		if ((i % 2) == 0) {
-			sumEven += (2 * f(a + i * weight));
+			sumEven += (2 * f(leftBoardOfInegration + i * width));
 		}
 		else {
-			sumUnEven += (4 * f(a + i * weight));
+			sumUnEven += (4 * f(leftBoardOfInegration + i * width));
 		}
 	}
-	double result = weight/3 * ((sumEven) + (sumUnEven) + f(n * weight));
+	double result = width/3 * ((sumEven) + (sumUnEven) + f(partition * width));
 	return result;
 }
 
 
-
-
-double simpsonMethod(const std::function<double(double)>&f, double a, double b, double eps) {
-	uint64_t n = 4;
+double simpsonMethod(const std::function<double(double)>&f, double leftBoardOfInegration, double rightBoardOfInegration, double eps) {
+	uint64_t partition = 4;
 	double x = 0;
 	double s1 = 0;
-	double s2 = summIntegral(f, n, a, b);
-	n *= 2;
+	double s2 = summIntegral(f, partition, leftBoardOfInegration, rightBoardOfInegration);
+	partition *= 2;
 	while (fabs(s2 - s1) > eps) {
 		s1 = s2;
-		s2 = summIntegral(f, n, a, b);	
-		n *= 2;
+		s2 = summIntegral(f, partition, leftBoardOfInegration, rightBoardOfInegration);	
+		partition *= 2;
 	}
 	return s2;
 }
 
-void getAandB(double &a, double &b ) {
-	std::cout << "Enter a = ";
-	std::cin >> a;
-	std::cout << "Enter b = ";
-	std::cin >> b;
-	if (a > b)
-		std::swap(a, b);
+
+void getLeftBoardOfInegrationAndleftBoardOfInegration(double &leftBoardOfInegration, double &rightBoardOfInegration ) {
+	std::cout << "Enter left board of inegration = ";
+	std::cin >> leftBoardOfInegration;
+	std::cout << "Enter right board of inegration = ";
+	std::cin >> rightBoardOfInegration;
+	if (leftBoardOfInegration > rightBoardOfInegration)
+		std::swap(leftBoardOfInegration, rightBoardOfInegration);
 }
+
+
 double getEps() {
 	double eps = -1;
 	while (eps <= 0) {
@@ -107,16 +117,15 @@ double getEps() {
 }
 
 
-
-
 void main() {
 	
-	double a = 0;
-	double b = 0;
+	double leftBoardOfInegration = 0;
+	double rightBoardOfInegration = 0;
 	double (*func[3])(double) = {arctang, difference, diffirenceToSecond };
 	for (size_t i = 0; i < 3; i++){
-		getAandB(a, b);
-		double Integral = simpsonMethod(func[i], a, b, getEps());
+		getLeftBoardOfInegrationAndleftBoardOfInegration(leftBoardOfInegration, rightBoardOfInegration);
+		double Integral = simpsonMethod(func[i], leftBoardOfInegration, rightBoardOfInegration, getEps());
 		std::cout << std::setprecision(10)<< Integral << '\n';
 	}
 }
+
