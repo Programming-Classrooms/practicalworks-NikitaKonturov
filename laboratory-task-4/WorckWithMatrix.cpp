@@ -4,9 +4,10 @@
 #include <iomanip>
 #include "WorckWithMatrix.h"
 
-void getRowsAndCollows(size_t& rows, size_t& colums) {
-	int rowsI = 0;
-	int columsI = 0;
+
+void getRowsAndCollums(size_t& rows, size_t& colums) {
+	int32_t rowsI = 0;
+	int32_t columsI = 0;
 	while (rowsI <= 0 || columsI <= 0) {
 		std::cout << "Please inter colums (this value must be pozitev): ";
 		std::cin >> columsI;
@@ -17,6 +18,7 @@ void getRowsAndCollows(size_t& rows, size_t& colums) {
 	colums = static_cast<size_t>(columsI);
 }
 
+
 void matrixDefine(int32_t**& matrix, size_t rows, size_t colums) {
 	matrix = new int32_t*[rows];
 	for (size_t i = 0; i < rows; ++i){
@@ -24,8 +26,9 @@ void matrixDefine(int32_t**& matrix, size_t rows, size_t colums) {
 	}
 }
 
+
 void fillingMatrixFromKeyboard(int32_t** matrix, size_t rows, size_t colums) {
-	int temp;
+	int32_t temp;
 	for (size_t i = 0; i < rows; ++i){
 		for (size_t j = 0; j < colums; ++j){
 			std::cin >> temp;
@@ -34,21 +37,21 @@ void fillingMatrixFromKeyboard(int32_t** matrix, size_t rows, size_t colums) {
 	}
 }
 
+
 void fillingMatrixFromRandom(int32_t** matrix, size_t rows, size_t colums) {
-	int32_t a = 0, b = 0;
+	int32_t leftBoard = 0, rightBoard = 0;
 	std::cout << "Please enter boards: ";
-	std::cin >> a >> b;
-	if (a > b) {
-		std::swap(a, b);
+	std::cin >> leftBoard >> rightBoard;
+	if (leftBoard > rightBoard) {
+		std::swap(leftBoard, rightBoard);
 	}
-	//int control = 0;
 	for (size_t i = 0; i < rows; ++i){
 		for (size_t j = 0; j < colums; ++j){
-			
-			matrix[i][j] = a + (rand() % (b - a + 1));
+			matrix[i][j] = leftBoard + (rand() % (rightBoard - leftBoard + 1));
 		}
 	}
 }
+
 
 void printMatrix(int32_t** matrix, size_t rows, size_t colums) {
 	for (size_t i = 0; i < rows; ++i){
@@ -61,6 +64,7 @@ void printMatrix(int32_t** matrix, size_t rows, size_t colums) {
 	}
 	std::cout << std::endl;
 }
+
 
 void sumEllementInColumsWithNull(int32_t** matrix, size_t rows, size_t colums) {
 	int32_t sum = 0;
@@ -85,7 +89,8 @@ void sumEllementInColumsWithNull(int32_t** matrix, size_t rows, size_t colums) {
 	}
 }
 
-void BubleSortRight(int32_t* line, size_t colums) {
+
+void bubleSortRight(int32_t* line, size_t colums) {
 	for (size_t i = 0; i < colums; ++i) {
 		for (size_t j = i; j < colums; ++j) {
 			if (line[i] > line[j]) std::swap(line[i], line[j]);
@@ -93,7 +98,8 @@ void BubleSortRight(int32_t* line, size_t colums) {
 	}
 }
 
-void BubleSortLeft(int32_t* line, size_t colums) {
+
+void bubleSortLeft(int32_t* line, size_t colums) {
 	for (size_t i = 0; i < colums; ++i) {
 		for (size_t j = i; j < colums; ++j) {
 			if (line[i] < line[j]) std::swap(line[i], line[j]);
@@ -101,18 +107,20 @@ void BubleSortLeft(int32_t* line, size_t colums) {
 	}
 }
 
-void SortLines(int32_t** matrix, size_t rows, size_t colums) {
+
+void sortLines(int32_t** matrix, size_t rows, size_t colums) {
 	for (size_t i = 0; i < rows; ++i){
 		if ((i % 2) == 0) {
-			BubleSortRight(matrix[i], colums);
+			bubleSortRight(matrix[i], colums);
 		}
 		else if ((i % 2) != 0) {
-			BubleSortLeft(matrix[i], colums);
+			bubleSortLeft(matrix[i], colums);
 		}
 	}
 }
 
-void fillingMatrixWithVatiants(int32_t** matrix, size_t rows, size_t colums) {
+
+void fillingMatrixWithVariants(int32_t** matrix, size_t rows, size_t colums) {
 	int32_t variant = 0;
 	while (variant != 1 && variant != 2){
 		std::cout << "Please select a variant filling matrix |1 - from keyboard|2 - random filling|: ";
@@ -128,20 +136,10 @@ void fillingMatrixWithVatiants(int32_t** matrix, size_t rows, size_t colums) {
 	}
 }
 
+
 void mtrxMemClear(int32_t**& matrix, size_t rows) {
 	for (size_t i = 0; i < rows-1; ++i){
 		delete matrix[i];
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
 
