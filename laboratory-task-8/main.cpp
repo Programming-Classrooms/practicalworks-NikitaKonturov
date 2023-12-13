@@ -18,16 +18,20 @@
 
 
 int main() {
- try {
-  std::string line;
-  getText(line, "line");
-  std::string delimiters;
-  getText(delimiters, "delimiters");
-  std::string ArmstrongNumbers; // since the first word is the name, that this name is a camelCase
-  findArmstrongsWords(line, delimiters, ArmstrongNumbers);
-  std::cout << "Armstrong numbers:" << ArmstrongNumbers;
- }catch(std::exception &err) {
-  std::cout << err.what() << std::endl;
- }
- return 0;
+    try {
+        std::string line;
+        getText(line, "line");
+        std::string delimiters;
+        getText(delimiters, "delimiters");
+        std::string armstrongNumbers;
+        findArmstrongsWords(line, delimiters, armstrongNumbers);
+        std::cout << "Armstrong numbers:" << armstrongNumbers;
+    }catch(std::bad_alloc &err){ //The error occurs when string does not have enough memory to expand
+        std::cerr << err.what() << "Heep is full" << std::endl;
+    }catch(std::invalid_argument &err) {
+        std::cerr << err.what() << std::endl;
+    }catch(std::exception &err){
+        std::cerr << err.what() << std::endl;
+    }
+    return 0;
 }
