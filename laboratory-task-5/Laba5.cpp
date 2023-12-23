@@ -1,30 +1,37 @@
-/*Вычислить значение определенного интеграла с аналитически заданной подынтегральной
-функцией с заданной точностью eps
-Б) по формуле правых прямоугольников;
-Д) по формуле Симпсона (параболических трапеций).
+/*
+	Вычислить значение определенного интеграла с аналитически заданной подынтегральной
+	функцией с заданной точностью eps
+	Б) по формуле правых прямоугольников;
+	Д) по формуле Симпсона (параболических трапеций).
 */
+
 #include <iostream>
 #include <cmath>
 #include <functional>
 #include <iomanip>
 
 
-double arctang(double x) { // first functin
+// first functin
+double arctang(double x) 
+{ 
 	return (x * std::atan(x));
 }
 
-
-double difference(double x) { // second function
+// second function
+double difference(double x) 
+{ 
 	return (1 / (1 + sqrt(x)));
 }
 
-
-double diffirenceToSecond(double x) { // third function
+// third function
+double diffirenceToSecond(double x) 
+{ 
 	return (2 / (1 - 4 * x));
 }
 
-
-double trapezoidMethod(const std::function<double(double)>&f, double leftBoardOfInegration, double rightBoardOfInegration, double eps) { // trapezoid metрod  
+// trapezoid metрod  
+double trapezoidMethod(const std::function<double(double)>&f, double leftBoardOfInegration, double rightBoardOfInegration, double eps)
+{ 
 	uint64_t partition = 4;
 	double width = 0;
 	double x1 = 0, x2 = 0;
@@ -44,8 +51,9 @@ double trapezoidMethod(const std::function<double(double)>&f, double leftBoardOf
 	return s2;
 }
 
-
-double metрodRightRectangle(const std::function<double(double)>&f, double leftBoardOfInegration, double rightBoardOfInegration, double eps) { // right rectangle metрods
+// right rectangle metрods
+double methodRightRectangle(const std::function<double(double)>&f, double leftBoardOfInegration, double rightBoardOfInegration, double eps) 
+{ 
 	uint64_t partition = 8;
 	double width = 0.0;
 	double x = 0.0;
@@ -64,8 +72,9 @@ double metрodRightRectangle(const std::function<double(double)>&f, double leftB
 	return s2;
 }
 
-
-double summIntegral(const std::function<double(double)>&f, uint64_t partition, double leftBoardOfInegration, double rightBoardOfInegration) { // sum parabolic trapezoids for Simpson method
+// sum parabolic trapezoids for Simpson method
+double summIntegral(const std::function<double(double)>&f, uint64_t partition, double leftBoardOfInegration, double rightBoardOfInegration) 
+{ 
 	double width = (rightBoardOfInegration - leftBoardOfInegration) / partition;
 	double sumEven = 0;
 	double sumUnEven = 0;
@@ -81,8 +90,8 @@ double summIntegral(const std::function<double(double)>&f, uint64_t partition, d
 	return result;
 }
 
-
-double simpsonMethod(const std::function<double(double)>&f, double leftBoardOfInegration, double rightBoardOfInegration, double eps) {
+double simpsonMethod(const std::function<double(double)>&f, double leftBoardOfInegration, double rightBoardOfInegration, double eps)
+{ 
 	uint64_t partition = 4;
 	double x = 0;
 	double s1 = 0;
@@ -96,8 +105,8 @@ double simpsonMethod(const std::function<double(double)>&f, double leftBoardOfIn
 	return s2;
 }
 
-
-void getLeftBoardOfInegrationAndleftBoardOfInegration(double &leftBoardOfInegration, double &rightBoardOfInegration ) {
+void getLeftBoardOfInegrationAndleftBoardOfInegration(double &leftBoardOfInegration, double &rightBoardOfInegration ) 
+{ 
 	std::cout << "Enter left board of inegration = ";
 	std::cin >> leftBoardOfInegration;
 	std::cout << "Enter right board of inegration = ";
@@ -107,7 +116,8 @@ void getLeftBoardOfInegrationAndleftBoardOfInegration(double &leftBoardOfInegrat
 }
 
 
-double getEps() {
+double getEps() 
+{ 
 	double eps = -1;
 	while (eps <= 0) {
 		std::cout << "Epsselont must be natural: ";
@@ -116,9 +126,8 @@ double getEps() {
 	return eps;
 }
 
-
-void main() {
-	
+int main() 
+{ 
 	double leftBoardOfInegration = 0;
 	double rightBoardOfInegration = 0;
 	double (*func[3])(double) = {arctang, difference, diffirenceToSecond };
@@ -127,5 +136,5 @@ void main() {
 		double Integral = simpsonMethod(func[i], leftBoardOfInegration, rightBoardOfInegration, getEps());
 		std::cout << std::setprecision(10)<< Integral << '\n';
 	}
+	return 0;
 }
-
