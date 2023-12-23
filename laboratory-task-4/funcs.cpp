@@ -2,7 +2,7 @@
 #include <random>
 #include <ctime>
 #include <iomanip>
-#include "WorckWithMatrix.h"
+#include "funcs.hpp"
 
 
 void getRowsAndCollums(size_t& rows, size_t& colums) 

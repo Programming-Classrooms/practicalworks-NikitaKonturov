@@ -10,7 +10,7 @@
 #include <random>
 #include <Windows.h>
 #include <exception>
-#include "WorckWithMatrix.h"
+#include "funcs.hpp"
 
 
 void main() 
