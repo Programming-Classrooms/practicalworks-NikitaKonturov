@@ -2,6 +2,7 @@
 #define _FUNCS_HPP_
 
 
+int32_t generationRandomNumber(int32_t leftBoard, int32_t rightBoard);
 void getRowsAndCollums(size_t & rows, size_t & colums);
 void matrixDefine(int32_t**& matrix, size_t rows, size_t colums);
 void fillingMatrixFromKeyboard(int32_t** matrix, size_t rows, size_t colums);

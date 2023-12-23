@@ -5,6 +5,11 @@
 #include "funcs.hpp"
 
 
+int32_t generationRandomNumber(int32_t leftBoard = 0, int32_t rightBoard = 10)
+{
+ return leftBoard + (rand() % (rightBoard - leftBoard + 1));
+}
+
 void getRowsAndCollums(size_t& rows, size_t& colums) 
 {
 	int32_t rowsI = 0;
@@ -48,11 +53,10 @@ void fillingMatrixFromRandom(int32_t** matrix, size_t rows, size_t colums)
 	}
 	for (size_t i = 0; i < rows; ++i){
 		for (size_t j = 0; j < colums; ++j) {
-			matrix[i][j] = leftBoard + (rand() % (rightBoard - leftBoard + 1));
+			matrix[i][j] = generationRandomNumber(leftBoard, rightBoard);
 		}
 	}
 }
-
 
 void printMatrix(int32_t** matrix, size_t rows, size_t colums) 
 {

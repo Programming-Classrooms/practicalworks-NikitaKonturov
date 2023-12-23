@@ -30,7 +30,6 @@ void main()
 		sortLines(matrix, rows, colums);
 		printMatrix(matrix, rows, colums);
 		mtrxMemClear(matrix, rows);
-		delete[] matrix;
 	}
 	catch(std::bad_alloc &e) {
 		std::cerr << "Hep is full " << e.what() << std::endl;
