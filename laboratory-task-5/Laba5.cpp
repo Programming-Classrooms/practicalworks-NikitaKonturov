@@ -128,13 +128,18 @@ double getEps()
 
 int main() 
 { 
-	double leftBoardOfInegration = 0;
-	double rightBoardOfInegration = 0;
-	double (*func[3])(double) = {arctang, difference, diffirenceToSecond };
-	for (size_t i = 0; i < 3; i++){
-		getLeftBoardOfInegrationAndleftBoardOfInegration(leftBoardOfInegration, rightBoardOfInegration);
-		double Integral = simpsonMethod(func[i], leftBoardOfInegration, rightBoardOfInegration, getEps());
-		std::cout << std::setprecision(10)<< Integral << '\n';
-	}
-	return 0;
+ try {
+  double leftBoardOfInegration = 0;
+  double rightBoardOfInegration = 0;
+  double (*func[3])(double) = {arctang, difference, diffirenceToSecond};
+  for (size_t i = 0; i < 3; i++) {
+   getLeftBoardOfInegrationAndleftBoardOfInegration(leftBoardOfInegration, rightBoardOfInegration);
+   std::cout << std::setprecision(10) << "Right rectangle method: " << methodRightRectangle(func[i], leftBoardOfInegration, rightBoardOfInegration, getEps()) << std::endl;
+   std::cout << std::setprecision(10) << "Simpson method: " << simpsonMethod(func[i], leftBoardOfInegration, rightBoardOfInegration, getEps()) << std::endl;
+  }
+ }
+ catch (std::exception err) { 
+  std::cerr << err.what() << std::endl;
+ }
+ return 0;
 }
