@@ -5,6 +5,7 @@
 - расположить элементы четных строк матрицы по возрастанию, а нечетных - по
 убыванию.
 */
+
 #include <iostream>
 #include <random>
 #include <Windows.h>
@@ -12,7 +13,8 @@
 #include "WorckWithMatrix.h"
 
 
-void main() {
+void main() 
+{
 	try{
 		SetConsoleCP(1225);
 		SetConsoleOutputCP(1225);
@@ -29,8 +31,8 @@ void main() {
 		printMatrix(matrix, rows, colums);
 		mtrxMemClear(matrix, rows);
 		delete[] matrix;
-	}catch(std::bad_alloc &e){
-		std::cerr << "Heep is full " << e.what() << std::endl;
-
+	}
+	catch(std::bad_alloc &e) {
+		std::cerr << "Hep is full " << e.what() << std::endl;
 	}
 }
