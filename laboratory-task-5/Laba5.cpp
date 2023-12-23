@@ -35,41 +35,41 @@ double trapezoidMethod(const std::function<double(double)>&f, double leftBoardOf
 	uint64_t partition = 4;
 	double width = 0;
 	double x1 = 0, x2 = 0;
-	double s1 = 0;
-	double s2 = 0.5 * (f(leftBoardOfInegration) + f(rightBoardOfInegration)) * (rightBoardOfInegration - leftBoardOfInegration);
+	double sum1 = 0;
+	double sum2 = 0.5 * (f(leftBoardOfInegration) + f(rightBoardOfInegration)) * (rightBoardOfInegration - leftBoardOfInegration);
 	do {
-		s1 = s2;
+		sum1 = sum2;
 		partition *= 2;
 		width = (rightBoardOfInegration - leftBoardOfInegration) / partition;
-		s2 = 0;
+		sum2 = 0;
 		for (int step = 0; step < partition; ++step) {
 			x1 = leftBoardOfInegration + step * width;
 			x2 = leftBoardOfInegration + (step + 1) * width;
-			s2 += 0.5 * (x2 - x1) * (f(x1) + f(x2));
+			sum2 += 0.5 * (x2 - x1) * (f(x1) + f(x2));
 		}
-	} while (fabs(s1 - s2) > eps);
-	return s2;
+	} while (fabs(sum1 - sum2) > eps);
+	return sum2;
 }
 
 // right rectangle metрods
-double methodRightRectangle(const std::function<double(double)>&f, double leftBoardOfInegration, double rightBoardOfInegration, double eps) 
+double methodRightRectangle(const std::function<double(double)>&f, double leftBoardOfInegration, double rightBoardOfInegration, double epsilont) 
 { 
 	uint64_t partition = 8;
 	double width = 0.0;
 	double x = 0.0;
-	double s1 = 0.0;
-	double s2 = f(rightBoardOfInegration) * (rightBoardOfInegration - leftBoardOfInegration);
-	while (fabs(s1 - s2) >= eps) {
-		s1 = s2;
-		s2 = 0.0;
+	double sum1 = 0.0;
+	double sum2 = f(rightBoardOfInegration) * (rightBoardOfInegration - leftBoardOfInegration);
+	while (fabs(sum1 - sum2) >= epsilont) {
+		sum1 = sum2;
+		sum2 = 0.0;
 		partition *= 2;
 		width = (rightBoardOfInegration - leftBoardOfInegration) / partition;
 		for (int step = 0; step <= partition; ++step) {
 			x = leftBoardOfInegration + step * width;
-			s2 += width * f(x);
+			sum2 += width * f(x);
 		}
 	}
-	return s2;
+	return sum2;
 }
 
 // sum parabolic trapezoids for Simpson method
@@ -90,56 +90,66 @@ double summIntegral(const std::function<double(double)>&f, uint64_t partition, d
 	return result;
 }
 
-double simpsonMethod(const std::function<double(double)>&f, double leftBoardOfInegration, double rightBoardOfInegration, double eps)
+double simpsonMethod(const std::function<double(double)>&f, double leftBoardOfInegration, double rightBoardOfInegration, double epsilont)
 { 
 	uint64_t partition = 4;
 	double x = 0;
-	double s1 = 0;
-	double s2 = summIntegral(f, partition, leftBoardOfInegration, rightBoardOfInegration);
+	double sum1 = 0;
+	double sum2 = summIntegral(f, partition, leftBoardOfInegration, rightBoardOfInegration);
 	partition *= 2;
-	while (fabs(s2 - s1) > eps) {
-		s1 = s2;
-		s2 = summIntegral(f, partition, leftBoardOfInegration, rightBoardOfInegration);	
+	while (fabs(sum2 - sum1) > epsilont) {
+		sum1 = sum2;
+		sum2 = summIntegral(f, partition, leftBoardOfInegration, rightBoardOfInegration);	
 		partition *= 2;
 	}
-	return s2;
+	return sum2;
 }
 
-void getLeftBoardOfInegrationAndleftBoardOfInegration(double &leftBoardOfInegration, double &rightBoardOfInegration ) 
+void getLeftBoardOfInegrationAndleftBoardOfInegration(double &leftBoardOfInegration, double &rightBoardOfInegration)
 { 
-	std::cout << "Enter left board of inegration = ";
-	std::cin >> leftBoardOfInegration;
-	std::cout << "Enter right board of inegration = ";
-	std::cin >> rightBoardOfInegration;
-	if (leftBoardOfInegration > rightBoardOfInegration)
-		std::swap(leftBoardOfInegration, rightBoardOfInegration);
-}
-
-
-double getEps() 
-{ 
-	double eps = -1;
-	while (eps <= 0) {
-		std::cout << "Epsselont must be natural: ";
-		std::cin >> eps;
+	size_t attempts = 10;
+	do { 
+		std::cout << "You have " << attempts << " attempts" << std::endl;
+		std::cout << "Enter left board of inegration = ";
+		std::cin >> leftBoardOfInegration;
+		std::cout << "Enter right board of inegration = ";
+		std::cin >> rightBoardOfInegration;
+		--attempts;
+	} while (leftBoardOfInegration > rightBoardOfInegration && attempts > 0);
+	if (leftBoardOfInegration > rightBoardOfInegration) { 
+		throw std::exception("You have reached your limit of attempts...");
 	}
-	return eps;
+}
+
+double getEps()
+{ 
+	double epselont = 0;
+	size_t attempts = 10;
+	do{
+		std::cout << "Enter epsilont: ";
+		std::cin >> epselont;
+
+	} while (epselont <= 0 && attempts > 0);
+	if (epselont < 0){
+		throw std::exception("You have reached your limit of attempts...");
+	}
+	return epselont;
 }
 
 int main() 
-{ 
- try {
-  double leftBoardOfInegration = 0;
-  double rightBoardOfInegration = 0;
-  double (*func[3])(double) = {arctang, difference, diffirenceToSecond};
-  for (size_t i = 0; i < 3; i++) {
-   getLeftBoardOfInegrationAndleftBoardOfInegration(leftBoardOfInegration, rightBoardOfInegration);
-   std::cout << std::setprecision(10) << "Right rectangle method: " << methodRightRectangle(func[i], leftBoardOfInegration, rightBoardOfInegration, getEps()) << std::endl;
-   std::cout << std::setprecision(10) << "Simpson method: " << simpsonMethod(func[i], leftBoardOfInegration, rightBoardOfInegration, getEps()) << std::endl;
-  }
- }
- catch (std::exception err) { 
-  std::cerr << err.what() << std::endl;
- }
+{  
+	try {  
+		double leftBoardOfInegration = 0;
+		double rightBoardOfInegration = 0;
+		double (*func[3])(double) = {arctang, difference, diffirenceToSecond};
+		for (size_t i = 0; i < 3; i++) { 
+			getLeftBoardOfInegrationAndleftBoardOfInegration(leftBoardOfInegration, rightBoardOfInegration);
+			std::cout << std::setprecision(10) << "Right rectangle method: " << methodRightRectangle(func[i], leftBoardOfInegration, rightBoardOfInegration, getEps()) << std::endl;
+			std::cout << std::setprecision(10) << "Simpson method: " << simpsonMethod(func[i], leftBoardOfInegration, rightBoardOfInegration, getEps()) << std::endl;
+		}
+	}
+	catch (std::exception err) { 
+		std::cerr << err.what() << std::endl;
+	}
  return 0;
 }
