@@ -19,7 +19,6 @@ void getRowsAndCollums(size_t& rows, size_t& colums)
 	colums = static_cast<size_t>(columsI);
 }
 
-
 void matrixDefine(int32_t**& matrix, size_t rows, size_t colums) 
 {
 	matrix = new int32_t*[rows];
@@ -27,7 +26,6 @@ void matrixDefine(int32_t**& matrix, size_t rows, size_t colums)
 		matrix[i] = new int32_t[colums];
 	}
 }
-
 
 void fillingMatrixFromKeyboard(int32_t** matrix, size_t rows, size_t colums) 
 {
@@ -39,7 +37,6 @@ void fillingMatrixFromKeyboard(int32_t** matrix, size_t rows, size_t colums)
 		}
 	}
 }
-
 
 void fillingMatrixFromRandom(int32_t** matrix, size_t rows, size_t colums) 
 {
@@ -70,7 +67,6 @@ void printMatrix(int32_t** matrix, size_t rows, size_t colums)
 	std::cout << std::endl;
 }
 
-
 void sumEllementInColumsWithNull(int32_t** matrix, size_t rows, size_t colums) 
 {
 	int32_t sum = 0;
@@ -95,7 +91,6 @@ void sumEllementInColumsWithNull(int32_t** matrix, size_t rows, size_t colums)
 	}
 }
 
-
 void bubleSortRight(int32_t* line, size_t colums) 
 {
 	for (size_t i = 0; i < colums; ++i) {
@@ -105,7 +100,6 @@ void bubleSortRight(int32_t* line, size_t colums)
 	}
 }
 
-
 void bubleSortLeft(int32_t* line, size_t colums) {
 	for (size_t i = 0; i < colums; ++i) {
 		for (size_t j = i; j < colums; ++j) {
@@ -113,7 +107,6 @@ void bubleSortLeft(int32_t* line, size_t colums) {
 		}
 	}
 }
-
 
 void sortLines(int32_t** matrix, size_t rows, size_t colums) {
 	for (size_t i = 0; i < rows; ++i){
@@ -125,7 +118,6 @@ void sortLines(int32_t** matrix, size_t rows, size_t colums) {
 		}
 	}
 }
-
 
 void fillingMatrixWithVariants(int32_t** matrix, size_t rows, size_t colums) {
 	int32_t variant = 0;
@@ -143,11 +135,9 @@ void fillingMatrixWithVariants(int32_t** matrix, size_t rows, size_t colums) {
 	}
 }
 
-
 void mtrxMemClear(int32_t**& matrix, size_t rows) {
 	for (size_t i = 0; i < rows-1; ++i){
 		delete matrix[i];
 	}
 	delete[] matrix;
 }
-
