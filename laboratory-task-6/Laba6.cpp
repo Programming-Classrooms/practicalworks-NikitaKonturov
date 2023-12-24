@@ -22,15 +22,22 @@
 #include <execution>
 
 
-bool checkFile(std::ifstream& file, std::string path) {
-    if (!file) {
-        throw std::exception("File not founded. Path " + path);
+bool checkFile(std::ifstream& file, char* path)
+{ 
+    if (!file) { 
+        char error[350] = "File not founded. Path ";
+        strcat(error, path);
+        throw std::exception(error);
     }
-    if (!file.is_open()) {
-        throw std::exception("File unopened. Path " + path);
+    if (!file.is_open()) { 
+        char error[350] = "File unopened. Path ";
+        strcat(error, path);
+        throw std::exception(error);
     }
-    if (file.peek() == EOF){ 
-        throw std::exception("File is epmty. Path " + path);
+    if (file.peek() == EOF) { 
+        char error[350] = "File is epmty. Path ";
+        strcat(error, path);
+        throw std::exception(error);
         file.close();
     }
     return true;
