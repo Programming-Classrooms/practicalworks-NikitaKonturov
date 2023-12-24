@@ -1,4 +1,4 @@
-#ifdef _WORCK_WITH_LINES_HPP_
+#ifndef _WORCK_WITH_LINES_HPP_
 #define _WORCK_WITH_LINES_HPP_
 
 
