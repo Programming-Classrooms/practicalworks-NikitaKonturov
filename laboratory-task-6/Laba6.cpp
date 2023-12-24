@@ -43,17 +43,11 @@ bool checkFile(std::ifstream& file, char* path)
     return true;
 }
 
-
-std::string getPath() {
-    std::string path;
+void getPath(char* path)
+{ 
     std::cout << "Please enter path to file";
     std::cin >> path;
-    for (size_t i = 0; i < path.size(); i++) {
-        if (path[i] == '\\'){ path[i] = '/';}
-    }
-    return path;
 }
-
 
 // filling an array from the keyboard
 template<typename T>
