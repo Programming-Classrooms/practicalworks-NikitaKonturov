@@ -7,26 +7,27 @@
 #include <string>
 
 
-bool checkFile(std::ifstream& file) {
-    if (!file.good()) { 
+bool checkFile(std::ifstream& file) 
+{ 
+    if (!file.good()) {  
         throw std::exception("File not founded...");
     }
-    if (!file) {
+    if (!file) { 
         file.close();
         throw std::exception("File unopened...");
     }
-    if (file.peek() == EOF) {
+    if (file.peek() == EOF) { 
         file.close();
         throw std::exception("File is epmty...");
     }
     return true;
 }
 
-
-std::pair<std::string, std::string> getSearchWordsFromFile(const char* path) {
+std::pair<std::string, std::string> getSearchWordsFromFile(const char* path) 
+{ 
     std::ifstream fin(path);
     std::string textWords;
-    if (checkFile(fin)) {
+    if (checkFile(fin)) { 
         std::getline(fin, textWords);
     }
     fin.close();
@@ -39,13 +40,13 @@ std::pair<std::string, std::string> getSearchWordsFromFile(const char* path) {
     return searchWords;
 }
 
-
-std::vector<std::string> getMainTextFromFile(const char* path) {
+std::vector<std::string> getMainTextFromFile(const char* path) 
+{ 
     std::ifstream fin(path);
     std::string line;
     std::getline(fin, line);
     std::vector<std::string>vectorWithAllLines;
-    if (checkFile(fin)) {
+    if (checkFile(fin)) { 
         for (size_t i = 0; std::getline(fin, line); i++){
             vectorWithAllLines.push_back(line);
         }
@@ -54,50 +55,50 @@ std::vector<std::string> getMainTextFromFile(const char* path) {
     }
 }
 
-
-bool lineItHasWord(std::string line, std::string word) {
+bool lineItHasWord(std::string line, std::string word) 
+{  
     std::regex delimiters("\\W+");
-    for (std::sregex_token_iterator words(line.begin(), line.end(), delimiters, -1), control; words != control; ++words) {
-        if (word == static_cast<std::string>(*words)) {
+    for (std::sregex_token_iterator words(line.begin(), line.end(), delimiters, -1), control; words != control; ++words) { 
+        if (word == static_cast<std::string>(*words)) { 
             return true;
         }
     }
     return false;
 }
 
-
-int32_t searchLineInText(std::vector<std::string> vectorWithAllLines, std::string word) {
+int32_t searchLineInText(std::vector<std::string> vectorWithAllLines, std::string word) 
+{ 
     size_t vectorSize = vectorWithAllLines.size();
     for (size_t i = 0; i < vectorSize; ++i) {
-        if (lineItHasWord(vectorWithAllLines[i], word)) {
+        if (lineItHasWord(vectorWithAllLines[i], word)) { 
             return i;
         }
     }
     return -1;
 }
 
-
-void swapLinesInText(std::vector<std::string> &vectorWithAllLines, std::pair<std::string, std::string> words) {
+void swapLinesInText(std::vector<std::string> &vectorWithAllLines, std::pair<std::string, std::string> words) 
+{ 
     size_t sizeVectror = vectorWithAllLines.size();
-    size_t firstIndex = searchLineInText(vectorWithAllLines, words.first);
-    size_t secondIndex = searchLineInText(vectorWithAllLines, words.second);
-    if (firstIndex != -1 || secondIndex != -1) {
-        std::swap(vectorWithAllLines[firstIndex], vectorWithAllLines[secondIndex]);
+    size_t firstLine = searchLineInText(vectorWithAllLines, words.first);
+    size_t secondLine = searchLineInText(vectorWithAllLines, words.second);
+    if (firstLine != -1 || secondLine != -1) {
+        std::swap(vectorWithAllLines[firstLine], vectorWithAllLines[secondLine]);
     }
 }
 
-
-void writingTextInFile(std::vector<std::string> mainText, std::pair<std::string, std::string> searchWords,const char* path) {
+void writingTextInFile(std::vector<std::string> mainText, std::pair<std::string, std::string> searchWords,const char* path) 
+{ 
     std::ofstream fout(path, std::ios::out);
-    if (fout.is_open()) {
+    if (fout.is_open()) { 
         fout << searchWords.first << " " << searchWords.second << '\n';
         size_t sizeVector = mainText.size();
-        for (size_t i = 0; i < sizeVector; i++){
+        for (size_t i = 0; i < sizeVector; i++) { 
             fout << mainText[i] << '\n';
         }
         fout.close();
     }
-    else {
+    else { 
         throw std::exception("Error file was not opened...");
     }
 }
