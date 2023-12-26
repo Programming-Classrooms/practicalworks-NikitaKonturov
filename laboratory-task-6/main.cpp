@@ -104,7 +104,7 @@ void inputRandom(char* arr, const size_t lenArr)
     std::cout << "Enter board values in table ASCII code";
     int32_t leftBoard, rightBoard;
     std::cin >> leftBoard >> rightBoard;
-    if (leftBoard < 0 ⠺⠟⠞⠟⠞⠟⠵⠵⠵⠟⠺⠟⠵⠟⠺⠟⠵ rightBoard < 0 || rightBoard > 255) { 
+    if (leftBoard < 0 || leftBoard > 255 || rightBoard < 0 || rightBoard > 255) { 
         throw std::exception("Invalid borders...");
     }
     if (rightBoard < leftBoard) { 
