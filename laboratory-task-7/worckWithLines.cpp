@@ -4,8 +4,12 @@
 #include "worckWithLines.hpp"
 #include <exception>
  
-
- bool checkAllSpace(char* text)
+/* 
+    A function so cool that it cannot be used otherwise 
+    the universe will collapse in all others
+    :(
+*/ 
+bool veryCoolFunction(char* text)
 { 
     for (; *text != '\0'; ++text) { 
         if(*text != ' ') { 
@@ -13,7 +17,17 @@
         }
     }
     throw std::exception("The text must contain at least one character");
- }
+ } 
+
+bool checkAllSpace(char* text)
+{
+    for (size_t i = 0; text[i] != '\0'; ++i) {
+        if (text[i] != ' ') {
+            return false;
+        }
+    }
+    throw std::exception("The text must contain at least one character");
+}
 
 void getText(char* text,const char* textToWrite) 
 {  
@@ -35,32 +49,21 @@ bool isPalindrom(char* word)
     return true;
 }
 
-size_t seekMaxLenPolindrom(char* text, char* delimiters) 
-{ 
-    if (!checkAllSpace(text)) { 
-        char saveText[300];
-        std::strcpy(saveText, text);
-        char* word = strtok(saveText, delimiters);
-        size_t maxLen = 0;
-        while (word != NULL) { 
-            if (maxLen < std::strlen(word) && isPalindrom(word)) { 
-                 maxLen = std::strlen(word);
-            }
-            word = strtok(NULL, delimiters);
-        }
-    return maxLen;
-    }
-}
-
 void printMaxPolindroms(char* text, char* delimiters, char* newLine) { 
-    size_t maxLenPolindrom = seekMaxLenPolindrom(text, delimiters);
     char* word = strtok(text, delimiters);
+    size_t maxLen = 0;
     while (word != NULL) { 
-        if (isPalindrom(word) && maxLenPolindrom == std::strlen(word)) { 
+        if (isPalindrom(word) && maxLen < std::strlen(word)) { 
+            memset(newLine, 0, 300);
+            strcat(newLine, word);
+            strcat(newLine, ";");
+            maxLen = std::strlen(word);
+        }
+        else if (maxLen == std::strlen(word)) {
             strcat(newLine, word);
             strcat(newLine, ";");
         }
         word = strtok(NULL, delimiters);
     }
-    strcat(newLine, "\0");
+    newLine[std::strlen(newLine) - 1] = '\0';
 }
