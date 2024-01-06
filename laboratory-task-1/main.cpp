@@ -39,12 +39,12 @@ void main()
 		while (fabs(term) >= epsilon){
 			term *= x * (0.5 - i) / (i + 1);
 			sum += term;
-			i++;
+			++i;
 		}
 		std::cout << std::setprecision(9) << "корень из (1 + " << x << ") = " << sum << std::endl;
 		std::cout << "Контрольное значение = " << std::setprecision(9) << std::sqrt(x + 1);
 	}
-	catch (std::exception err){
+	catch (std::exception err) {
 		std::cerr << err.what() << std::endl;
 	}
 }
