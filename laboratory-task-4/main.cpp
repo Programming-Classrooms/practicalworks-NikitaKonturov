@@ -13,7 +13,7 @@
 #include "funcs.hpp"
 
 
-void main() 
+int main() 
 {
 	try{
 		SetConsoleCP(1225);
@@ -34,4 +34,5 @@ void main()
 	catch(std::bad_alloc &e) {
 		std::cerr << "Hep is full " << e.what() << std::endl;
 	}
+	return 0;
 }

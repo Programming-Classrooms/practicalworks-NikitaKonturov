@@ -7,7 +7,7 @@
 
 int32_t generationRandomNumber(int32_t leftBoard = 0, int32_t rightBoard = 10)
 {
- return leftBoard + (rand() % (rightBoard - leftBoard + 1));
+	return leftBoard + (rand() % (rightBoard - leftBoard + 1));
 }
 
 void getRowsAndCollums(size_t& rows, size_t& colums) 
