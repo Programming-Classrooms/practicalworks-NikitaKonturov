@@ -14,7 +14,7 @@
 int main() 
 { 
     try { 
-        const char *path = "input.txt";
+        std::string path = "input.txt";
         std::pair<std::string, std::string> searchWords = getSearchWordsFromFile(path);
         std::vector<std::string> mainText = getMainTextFromFile(path);
         swapLinesInText(mainText, searchWords);

@@ -5,11 +5,11 @@
 
 
 bool checkFile(std::ifstream& file);
-std::pair<std::string, std::string> getSearchWordsFromFile(const char* path);
-std::vector<std::string> getMainTextFromFile(const char* path);
+std::string getSearchWordsFromFile(std::string path);
+std::vector<std::string> getMainTextFromFile(std::string path);
 void swapLinesInText(std::vector<std::string> &vectorWithAllLines, std::pair<std::string, std::string> words);
 int32_t searchLineInText(std::vector<std::string> vectorWithAllLines, std::string word);
 bool lineItHasWord(std::string line, std::string word);
-void writingTextInFile(std::vector<std::string> mainText, std::pair<std::string, std::string> searchWords, const char* path);
+void writingTextInFile(std::vector<std::string> mainText, std::pair<std::string, std::string> searchWords, std::string path);
 
 #endif

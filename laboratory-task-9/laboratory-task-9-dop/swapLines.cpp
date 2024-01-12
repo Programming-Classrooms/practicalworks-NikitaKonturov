@@ -23,7 +23,7 @@ bool checkFile(std::ifstream& file)
     return true;
 }
 
-std::pair<std::string, std::string> getSearchWordsFromFile(const char* path) 
+std::string getSearchWordsFromFile(std::string path) 
 { 
     std::ifstream fin(path);
     std::string textWords;
@@ -31,16 +31,10 @@ std::pair<std::string, std::string> getSearchWordsFromFile(const char* path)
         std::getline(fin, textWords);
     }
     fin.close();
-    std::regex delimiters("\\W+");
-    std::sregex_token_iterator word(textWords.begin(), textWords.end(), delimiters, -1);
-    std::pair<std::string, std::string> searchWords;
-    searchWords.first = *word;
-    ++word;
-    searchWords.second = *word;
-    return searchWords;
+    return textWords;
 }
 
-std::vector<std::string> getMainTextFromFile(const char* path) 
+std::vector<std::string> getMainTextFromFile(std::string path) 
 { 
     std::ifstream fin(path);
     std::string line;
@@ -87,7 +81,7 @@ void swapLinesInText(std::vector<std::string> &vectorWithAllLines, std::pair<std
     }
 }
 
-void writingTextInFile(std::vector<std::string> mainText, std::pair<std::string, std::string> searchWords,const char* path) 
+void writingTextInFile(std::vector<std::string> mainText, std::pair<std::string, std::string> searchWords, std::string path) 
 { 
     std::ofstream fout(path, std::ios::out);
     if (fout.is_open()) { 
