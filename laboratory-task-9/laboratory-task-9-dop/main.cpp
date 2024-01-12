@@ -19,7 +19,7 @@ int main()
         std::string searchWords = getSearchWordsFromFile(path);
         std::vector<std::string> mainText = getMainTextFromFile(path);
         swapLinesInText(mainText, searchWords);
-        writingTextInFile(mainText, searchWords, path);
+        writeTextInFile(mainText, searchWords, path);
     }
     catch (std::runtime_error& err) {
         std::cerr << err.what() << std::endl;
