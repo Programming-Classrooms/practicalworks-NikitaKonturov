@@ -15,7 +15,7 @@ int main()
 { 
     try { 
         std::string path = "input.txt";
-        std::pair<std::string, std::string> searchWords = getSearchWordsFromFile(path);
+        std::string searchWords = getSearchWordsFromFile(path);
         std::vector<std::string> mainText = getMainTextFromFile(path);
         swapLinesInText(mainText, searchWords);
         writingTextInFile(mainText, searchWords, path);
