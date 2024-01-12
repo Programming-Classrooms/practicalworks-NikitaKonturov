@@ -1,7 +1,7 @@
-#include<iostream>
-#include<string>
-#include<cstring>
-#include<cmath>
+#include <iostream>
+#include <string>
+#include <cstring>
+#include <cmath>
 #include "seekNumbersInLine.hpp"
 
 
@@ -41,7 +41,7 @@ bool isArmstrongNumber(std::string word)
         int32_t sumNumbers = 0;
         int32_t num;
         for (size_t i = 0; i < lenNumber; ++i) { 
-            num = static_cast<int32_t>(word[i]) - '0';
+            num = word[i] - '0';
             sumNumbers += std::pow(num, lenNumber);
         }
         return  number == sumNumbers;
