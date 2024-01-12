@@ -1,5 +1,5 @@
 /*
-    Вариант 4 
+    Вариант 4
     В текстовом файле input.txt в первой строке записаны два слова,
     разделенные пробелами, в остальных строках - текст, слова в котором
     разделены знаками препинания. Нужно найти эти слова в тексте и поменять
@@ -8,19 +8,20 @@
 */
 
 #include <iostream>
+#include <exception>
 #include "swapLines.hpp"
 
 
-int main() 
-{ 
-    try { 
+int main()
+{
+    try {
         std::string path = "input.txt";
         std::string searchWords = getSearchWordsFromFile(path);
         std::vector<std::string> mainText = getMainTextFromFile(path);
         swapLinesInText(mainText, searchWords);
         writingTextInFile(mainText, searchWords, path);
     }
-    catch (std::exception &err) { 
+    catch (std::runtime_error& err) {
         std::cerr << err.what() << std::endl;
     }
     return 0;
