@@ -8,8 +8,8 @@
 */
 
 #include <iostream>
-#include "workWithFiles.hpp"
 #include <Windows.h>
+#include "workWithFiles.hpp"
 
 
 int main()
@@ -17,13 +17,16 @@ int main()
     try { 
         SetConsoleCP(1225);
         SetConsoleOutputCP(1225);
+
         const std::string path = "input.txt";
         std::string mainText = getMainTextFromFile(path);
-        std::string linesWithMaxNumberOfWords = seekLinnesWithMaxNumberWords(mainText);
+        std::string linesWithMaxNumberOfWords = seekLinesWithMaxNumberWords(mainText);
+        
         std::cout << linesWithMaxNumberOfWords << std::endl;
     }
     catch (std::exception &err) { 
         std::cerr << err.what() << std::endl;
     }
+
     return 0;
 }

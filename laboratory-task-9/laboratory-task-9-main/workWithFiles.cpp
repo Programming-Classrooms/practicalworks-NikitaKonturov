@@ -1,7 +1,7 @@
 #include <iostream>
-#include "workWithFiles.hpp"
 #include <fstream>
 #include <regex>
+#include "workWithFiles.hpp"
 
 
 bool checkFile(std::ifstream &file) 
@@ -16,6 +16,7 @@ bool checkFile(std::ifstream &file)
         file.close();
         throw std::exception("File is epmty...");
     }
+
     return true;
 }
 
@@ -29,6 +30,7 @@ std::string getMainTextFromFile(const std::string path)
             textWithAllLines.push_back('\n');
         }
         fin.close();
+
         return textWithAllLines;
     }
 }
@@ -42,17 +44,21 @@ size_t countWords(std::string line) {
     return count;
 }
 
-std::string seekLinnesWithMaxNumberWords(std::string textWithAllLines) 
+std::string seekLinesWithMaxNumberWords(std::string textWithAllLines) 
 {  
     size_t maxNumberWordsInLine = 0;
     std::regex linesDelimiter("\n");
     std::string linesWithMaxWords, line;
-    size_t numberLinesWithMaxWords = 1, numberOfWords;
+    size_t numberLinesWithMaxWords = 1;
+    size_t numberOfWords;
+
     for (std::sregex_token_iterator lines(textWithAllLines.begin(), textWithAllLines.end(), linesDelimiter, -1), control; lines != control && numberLinesWithMaxWords <= 10; ++lines) { 
         line = *lines;
         numberOfWords = countWords(line);
+
         if (maxNumberWordsInLine < numberOfWords) { 
             maxNumberWordsInLine = numberOfWords;
+
             linesWithMaxWords.clear();
             linesWithMaxWords.append(line);
             linesWithMaxWords.push_back('\n');
@@ -64,5 +70,6 @@ std::string seekLinnesWithMaxNumberWords(std::string textWithAllLines)
             ++numberLinesWithMaxWords;
         }
     }
+
     return linesWithMaxWords;
 }
