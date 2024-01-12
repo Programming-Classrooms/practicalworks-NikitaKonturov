@@ -84,7 +84,7 @@ void swapLinesInText(std::vector<std::string>& vectorWithAllLines, std::string w
     }
 }
 
-void writingTextInFile(std::vector<std::string> mainText, std::string searchWords, std::string path)
+void writeTextInFile(std::vector<std::string> mainText, std::string searchWords, std::string path)
 {
     std::ofstream fout(path);
     if (fout.is_open()) {
