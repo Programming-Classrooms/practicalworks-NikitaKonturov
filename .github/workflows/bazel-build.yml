@@ -1,0 +1,27 @@
+name: Bazel build
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  list-root-changed-dirs:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: bazelbuild/setup-bazelisk@v3
+
+    - name: Bazel build changed projects
+      run: |
+        git fetch origin ${{ github.base_ref }}
+
+        git diff --name-only origin/${{ github.base_ref }} ${{ github.sha }} | cut -d'/' -f1 | uniq | grep '^laboratory-task' > changed_dirs.txt || exit 0
+        
+        cat changed_dirs.txt | while read dir; do
+          if [ -n "$dir" ] && [ -d "$dir" ]; then
+            echo "Executing 'bazel build' in directory $dir"
+            (cd $dir && bazel build //src/main:all --config=release)
+          else
+            echo "Directory $dir does not exist or is not a directory"
+          fi
+        done
