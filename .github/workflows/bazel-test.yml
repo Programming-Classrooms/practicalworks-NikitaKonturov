@@ -1,0 +1,35 @@
+name: Bazel test
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  list-root-changed-dirs:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: bazelbuild/setup-bazelisk@v3
+
+    - name: Setup Clang
+      uses: egor-tensin/setup-clang@v1
+      with:
+        clang-version: '11'
+
+    - name: Check Clang version
+      run: clang --version
+
+    - name: Bazel test changed projects
+      run: |
+
+        git fetch origin ${{ github.base_ref }}
+        git diff --name-only origin/${{ github.base_ref }} ${{ github.sha }} | cut -d'/' -f1 | uniq | grep '^laboratory-task' > changed_dirs.txt || exit 0
+        
+        cat changed_dirs.txt | while read dir; do
+          if [ -n "$dir" ] && [ -d "$dir" ]; then
+            echo "Executing 'bazel test' in directory $dir"
+             (cd $dir && bazel test //src/tests:all --cxxopt=-std=c++20 --action_env CC=g++ --action_env CXX=g++)
+          else
+            echo "Directory $dir does not exist or is not a directory"
+          fi
+        done
