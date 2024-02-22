@@ -13,6 +13,9 @@ myString::myString(int64_t sizeToString) {
 }
 
 myString::myString(const myString &source) {
+  if (str == source.str || source.str == nullptr) {
+    throw std::invalid_argument("Source have a bad pointer...");
+  }
   capacity = source.capacity;
   size = source.size;
   str = new char[capacity];
@@ -23,6 +26,9 @@ myString::myString(const myString &source) {
 }
 
 myString::myString(const char *source) {
+  if (str == source || source == nullptr) {
+    throw std::invalid_argument("Source have a bad pointer...");
+  }
   size_t sourceSize = std::strlen(source);
   size = sourceSize;
   capacity = size * 2;
@@ -70,6 +76,9 @@ void myString::push_back(char item) {
 }
 
 void myString::append(const myString &source) {
+  if (str == nullptr || source.str == nullptr || source.str == str) {
+    throw std::logic_error("Bad pointers...");
+  }
   if (capacity > (size + source.size)) {
     for (size_t i = 0, j = size; i < source.size; ++i, ++j) {
       str[j] = source.str[i];
@@ -92,9 +101,10 @@ void myString::append(const myString &source) {
   }
 }
 
-void myString::append(char *source)
-
-{
+void myString::append(char *source) {
+  if (str == nullptr || source == nullptr || str == source) {
+    throw std::logic_error("Bad pointers...");
+  }
   size_t sourceSize = std::strlen(source);
   if (capacity > (size + sourceSize)) {
     for (size_t i = 0, j = size; i < sourceSize; ++i) {
@@ -114,15 +124,20 @@ void myString::append(char *source)
     size += sourceSize;
     str = tmp;
     str[size] = '/0';
+    capacity = size * 2;
   }
 }
 
 void myString::append(const char *source) {
+  if (str == nullptr || source == nullptr || str == source) {
+    throw std::logic_error("Bad pointers...");
+  }
   size_t sourceSize = std::strlen(source);
-  if (capacity < (size + sourceSize)) {
+  if (capacity > (size + sourceSize)) {
     for (size_t i = 0, j = size; i < sourceSize; ++i, ++j) {
       str[j] = source[i];
     }
+    size += sourceSize;
     str[size] = '/0';
   } else {
     char *tmp = new char[(size + sourceSize) * 2];
@@ -137,10 +152,14 @@ void myString::append(const char *source) {
     size += sourceSize;
     str = tmp;
     str[size] = '/0';
+    capacity = size * 2;
   }
 }
 
 void myString::insert(const char *source, size_t pos) {
+  if (str == nullptr || source == nullptr || str == source) {
+    throw std::logic_error("Bad pointers...");
+  }
   if (pos > size) {
     throw std::out_of_range("Bad position...");
   }
@@ -179,6 +198,9 @@ void myString::insert(const char *source, size_t pos) {
 }
 
 void myString::insert(const myString &source, size_t pos) {
+  if (str == nullptr || source.str == nullptr || str == source.str) {
+    throw std::logic_error("Bad pointers...");
+  }
   if (pos >= size) {
     throw std::out_of_range("Bad position...");
   }
@@ -214,6 +236,9 @@ void myString::insert(const myString &source, size_t pos) {
 }
 
 myString myString::substr(size_t pos, size_t lenght) const {
+  if (str == nullptr) {
+    throw std::logic_error("The line was deleted...");
+  }
   if (pos + lenght > size) {
     throw std::out_of_range("Out of range...");
   }
@@ -225,6 +250,9 @@ myString myString::substr(size_t pos, size_t lenght) const {
 }
 
 void myString::replace(const myString &source, size_t pos, size_t lenght) {
+  if (str == nullptr || source.str == nullptr || str == source.str) {
+    throw std::logic_error("Bad pointers...");
+  }
   if (pos + lenght > size) {
     throw std::out_of_range("Out of range...");
   }
@@ -263,6 +291,9 @@ void myString::replace(const myString &source, size_t pos, size_t lenght) {
 }
 
 void myString::replace(const char *source, size_t pos, size_t lenght) {
+  if (str == nullptr || source == nullptr || str == source) {
+    throw std::logic_error("Bad pointers...");
+  }
   if (pos + lenght > size) {
     throw std::out_of_range("Out of range...");
   }
@@ -270,7 +301,7 @@ void myString::replace(const char *source, size_t pos, size_t lenght) {
   if (capacity > (size + sourceSize - lenght)) {
     char *tmp = new char[size - pos - lenght];
     for (size_t i = 0, j = pos + lenght; j < size; ++i, ++j) {
-      tmp[i] = source[j];
+      tmp[i] = str[j];
     }
     for (size_t i = 0, j = pos; i < sourceSize; ++i, ++j) {
       str[j] = source[i];
@@ -315,6 +346,9 @@ size_t myString::getSize() const { return size; }
 bool myString::empty() const { return size == 0; }
 
 char &myString::operator[](int64_t iterator) {
+  if (str == nullptr) {
+    throw std::logic_error("String is emty...");
+  }
   if (iterator < 0) {
     throw std::out_of_range("Bad index...");
   }
@@ -322,8 +356,8 @@ char &myString::operator[](int64_t iterator) {
 }
 
 void myString::operator=(const myString &source) {
-  if (str == source.str) {
-    throw std::invalid_argument("Bad pointer...");
+  if (str == source.str || str == nullptr || source.str == nullptr) {
+    throw std::invalid_argument("Bad pointers...");
   }
   size = source.size;
   capacity = source.capacity;
@@ -336,6 +370,9 @@ void myString::operator=(const myString &source) {
 }
 
 void myString::operator=(const char *source) {
+  if (source == nullptr || str == source || str == nullptr) {
+    throw std::logic_error("Bad pointers...");
+  }
   size = std::strlen(source);
   capacity = size * 2;
   delete[] str;
@@ -347,6 +384,9 @@ void myString::operator=(const char *source) {
 }
 
 std::ostream &operator<<(std::ostream &out, myString &source) {
+  if (source.str == nullptr) {
+    throw std::logic_error("The line was deleted...");
+  }
   for (size_t i = 0; i < source.size; ++i) {
     out << source.str[i];
   }
@@ -355,6 +395,9 @@ std::ostream &operator<<(std::ostream &out, myString &source) {
 }
 
 std::istream &operator>>(std::istream &in, myString &source) {
+  if (source.str == nullptr) {
+    throw std::logic_error("The line was deleted...");
+  }
   delete[] source.str;
   source.str = new char[0];
   source.size = 0;
@@ -387,7 +430,7 @@ bool myString::operator==(myString &compared) const {
 
 char *myString::c_str() const {
   char *strForOut = new char[size + 1];
-  for (size_t i = 0; i <= size + 1; ++i) {
+  for (size_t i = 0; i < size; ++i) {
     strForOut[i] = str[i];
   }
 

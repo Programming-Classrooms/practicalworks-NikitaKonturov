@@ -4,41 +4,41 @@
 #include <iostream>
 
 class myString {
- private:
-  char* str;
+private:
+  char *str;
   size_t size;
   size_t capacity;
 
- public:
+public:
   myString();
   myString(int64_t);
-  myString(const myString&);
-  myString(myString&&);
-  myString(const char*);
+  myString(const myString &);
+  myString(myString &&);
+  myString(const char *);
   ~myString();
   void push_back(char);
-  void append(const myString&);
-  void append(char*);
-  void append(const char*);
-  void insert(const char*, size_t);
-  void insert(const myString&, size_t);
+  void append(const myString &);
+  void append(char *);
+  void append(const char *);
+  void insert(const char *, size_t);
+  void insert(const myString &, size_t);
   myString substr(size_t, size_t) const;
-  void replace(const myString&, size_t, size_t);
-  void replace(const char*, size_t, size_t);
+  void replace(const myString &, size_t, size_t);
+  void replace(const char *, size_t, size_t);
   void clear();
   size_t getSize() const;
   bool empty() const;
-  char* c_str() const;
+  char *c_str() const;
 
-  char& operator[](int64_t);
-  void operator=(const myString&);
-  void operator=(const char*);
-  bool operator==(myString&) const;
+  char &operator[](int64_t);
+  void operator=(const myString &);
+  void operator=(const char *);
+  bool operator==(myString &) const;
 
-  myString operator+(const myString&) const;
+  myString operator+(const myString &) const;
 
-  friend std::ostream& operator<<(std::ostream&, myString&);
-  friend std::istream& operator>>(std::istream&, myString&);
+  friend std::ostream &operator<<(std::ostream &, myString &);
+  friend std::istream &operator>>(std::istream &, myString &);
 };
 
-#endif  // MYSTRING_HPP
+#endif // MYSTRING_HPP
