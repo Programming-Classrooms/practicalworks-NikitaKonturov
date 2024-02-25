@@ -84,9 +84,7 @@ public:
 // Операторы ввода, вывода
     friend std::ostream &operator<<(std::ostream &, myString &);
     friend std::istream &operator>>(std::istream &, myString &);
-  
-
-
+    
 };
 
 #endif // MYSTRING_HPP

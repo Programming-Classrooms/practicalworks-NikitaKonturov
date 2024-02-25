@@ -569,7 +569,12 @@ myString::operator std::string() const
         throw std::logic_error("Bad pointer...");
     }
 
-    std::string result(this->pStr);
+    std::string result;
+
+    for (size_t i = 0; i < this->size; ++i) {
+        result.push_back(pStr[i]);
+    }
+
     return result; 
 }
 
