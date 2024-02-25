@@ -85,6 +85,9 @@ myString::~myString()
 /*========Метод добавления символа в конец строки=========*/
 void myString::push_back(char letter) 
 {
+    if(letter > 255 || letter < 0) {
+        throw std::out_of_range("Is no ASCII symbol...");
+    }
 // Случай при котором строка заполнила всю предоставленную ей память 
     if (this->size == this->capacity) {
 // Если строка пустая и ей размер 0
@@ -158,6 +161,11 @@ void myString::append(const char *source)
     }
 
     size_t sourceSize = std::strlen(source);
+
+    if (sourceSize == 0) {
+        return;
+    }
+
     if (this->capacity > (this->size + sourceSize)) {
         for (size_t i = 0, j = this->size; i < sourceSize; ++i, ++j) {
             this->pStr[j] = source[i];
@@ -240,7 +248,7 @@ void myString::insert(const myString &source, size_t pos)
         throw std::logic_error("Bad pointers...");
     }
     
-    if (pos >= this->size) {
+    if (pos > this->size) {
         throw std::out_of_range("Bad position...");
     }
 
@@ -290,12 +298,17 @@ void myString::replace(const myString &source, size_t pos, size_t lenght)
         throw std::out_of_range("Out of range...");
     }
 
+    if (lenght == 0) {
+        this->insert(source, pos);
+        return;
+    }
+
 // Если после замене итоговая строка не будет привышать объём выделенной памяти 
     if (this->capacity > (this->size + source.size - lenght)) {
         char *tmp = new char[this->size - pos - lenght];
 
         for (size_t i = 0, j = pos + lenght; j < this->size; ++i, ++j) {
-            tmp[i] = source.pStr[j];
+            tmp[i] = pStr[j];
         }
         for (size_t i = 0, j = pos; i < source.size; ++i, ++j) {
             this->pStr[j] = source.pStr[i];
@@ -331,45 +344,50 @@ void myString::replace(const myString &source, size_t pos, size_t lenght)
 //Метод замены подстроки[перегрузка для const char*]
 void myString::replace(const char *source, size_t pos, size_t lenght) 
 {
-  if (pStr == nullptr || source == nullptr || pStr == source) {
-    throw std::logic_error("Bad pointers...");
-  }
-  if (pos + lenght > size) {
-    throw std::out_of_range("Out of range...");
-  }
-  size_t sourceSize = std::strlen(source);
-  if (capacity > (size + sourceSize - lenght)) {
-    char *tmp = new char[size - pos - lenght];
-    for (size_t i = 0, j = pos + lenght; j < size; ++i, ++j) {
-      tmp[i] = pStr[j];
+    if (lenght == 0) {
+        this->insert(source, pos);
+        return;
     }
-    for (size_t i = 0, j = pos; i < sourceSize; ++i, ++j) {
-      pStr[j] = source[i];
+
+    if (pStr == nullptr || source == nullptr || pStr == source) {
+        throw std::logic_error("Bad pointers...");
     }
-    for (size_t i = 0, j = pos + sourceSize; i < size - pos - lenght;
-         ++i, ++j) {
-      pStr[j] = tmp[i];
+    if (pos + lenght > size) {
+        throw std::out_of_range("Out of range...");
     }
-    size = size - lenght + sourceSize;
-    delete[] tmp;
-    pStr[size] = '/0';
-  } else {
-    char *tmp = new char[size - lenght + sourceSize];
-    for (size_t i = 0; i < pos; ++i) {
-      tmp[i] = pStr[i];
+    size_t sourceSize = std::strlen(source);
+    if (capacity > (size + sourceSize - lenght)) {
+        char *tmp = new char[size - pos - lenght];
+        for (size_t i = 0, j = pos + lenght; j < size; ++i, ++j) {
+            tmp[i] = pStr[j];
+        }
+        for (size_t i = 0, j = pos; i < sourceSize; ++i, ++j) {
+            pStr[j] = source[i];
+        }
+        for (size_t i = 0, j = pos + sourceSize; i < size - pos - lenght; ++i, ++j) {
+            pStr[j] = tmp[i];
+        }
+        size = size - lenght + sourceSize;
+        delete[] tmp;
+        pStr[size] = '/0';
+    } 
+    else {
+        char *tmp = new char[size - lenght + sourceSize];
+        for (size_t i = 0; i < pos; ++i) {
+            tmp[i] = pStr[i];
+        }
+        for (size_t i = pos, j = 0; j < sourceSize; i++) {
+            tmp[i] = source[j];
+        }
+        for (size_t i = pos + lenght, j = sourceSize + pos; i < size; ++i, ++j) {
+            tmp[j] = pStr[i];
+        }
+        size = size - lenght + sourceSize;
+        capacity = size * 2;
+        delete[] pStr;
+        pStr = tmp;
+        pStr[size] = '/0';
     }
-    for (size_t i = pos, j = 0; j < sourceSize; i++) {
-      tmp[i] = source[j];
-    }
-    for (size_t i = pos + lenght, j = sourceSize + pos; i < size; ++i, ++j) {
-      tmp[j] = pStr[i];
-    }
-    size = size - lenght + sourceSize;
-    capacity = size * 2;
-    delete[] pStr;
-    pStr = tmp;
-    pStr[size] = '/0';
-  }
 }
 
 /*==============Метод очистки строки==============*/
@@ -421,6 +439,9 @@ bool myString::empty() const
 // Метод возвращающий копию строки с типом char*
 char *myString::c_str() const 
 {
+    if(this->pStr == nullptr) {
+        throw std::logic_error("myString is empty...");
+    }
     char *result = new char[this->size];
 
     for (size_t i = 0; i < this->size; ++i) {
@@ -514,7 +535,6 @@ bool myString::operator<(const myString &compared) const
     return this->size < compared.size;
 }
 
-
 // Оператор неравенства
 bool myString::operator!=(const myString &compared) const
 {
@@ -569,7 +589,7 @@ myString::operator int64_t() const
         throw std::invalid_argument("String not have digits...");
     }
 
-    for (size_t i = static_cast<size_t>(isNegative); isdigit(this->pStr[i]); ++i) {
+    for (size_t i = static_cast<size_t>(isNegative); isdigit(this->pStr[i]) && i < size; ++i) {
         result = (10 * result) + (static_cast<int>(this->pStr[i]) - '0');
     }
     if(isNegative) {
@@ -600,10 +620,10 @@ myString::operator double() const
     }
 
     size_t i = static_cast<size_t>(isNegative);
-    for (;isdigit(this->pStr[i]); ++i) {
+    for (;isdigit(this->pStr[i]) && i < this->size; ++i) {
         result = (10 * result) + (static_cast<int>(this->pStr[i]) - '0'); 
     }
-    size_t bitDepth = 1;
+    size_t bitDepth = 0;
     if (this->pStr[i++] == '.') {
         for (;isdigit(pStr[i]); ++i, ++bitDepth) {
             rightValue = (10 * rightValue) + (static_cast<int>(this->pStr[i]) - '0'); 
@@ -633,7 +653,8 @@ std::ostream &operator<<(std::ostream &out, myString &source)
 }
 
 //Оператор ввода
-std::istream &operator>>(std::istream &in, myString &source) {
+std::istream &operator>>(std::istream &in, myString &source) 
+{
     if (source.pStr == nullptr) {
         throw std::logic_error("The line was deleted...");
     }

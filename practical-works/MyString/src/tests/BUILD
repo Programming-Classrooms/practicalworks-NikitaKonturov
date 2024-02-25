@@ -3,6 +3,6 @@ cc_test(
     srcs = ["MyStringTests.cpp"],
     deps = [
         "@googletest//:gtest_main",
-        "//src/funcs:classString"
+        "//src/class:classString"
     ]
 )
