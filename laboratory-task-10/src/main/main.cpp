@@ -14,10 +14,10 @@
 int main()
 {
 	try {
-		std::string pathToSurenames = "/home/nikita/Desktop/practicalworks-NikitaKonturov/laboratory-task-10/src/files/Strings.txt";
-		std::string pathToNumbers = "/home/nikita/Desktop/practicalworks-NikitaKonturov/laboratory-task-10/src/files/Numbers.txt";
-		std::string pathToOutInTxt = "/home/nikita/Desktop/practicalworks-NikitaKonturov/laboratory-task-10/src/files/result.txt";
-		std::string pathToOutInBin = "/home/nikita/Desktop/practicalworks-NikitaKonturov/laboratory-task-10/src/files/result.bin";
+		std::string pathToSurenames = "src/files/Strings.txt";
+		std::string pathToNumbers = "src/files/Numbers.txt";
+		std::string pathToOutInTxt = "src/files/result.txt";
+		std::string pathToOutInBin = "src/files/result.bin";
 
 		std::string delimsToSurenames = getDelimiters(pathToSurenames);
 		std::string textToSureNames = getMainText(pathToSurenames);

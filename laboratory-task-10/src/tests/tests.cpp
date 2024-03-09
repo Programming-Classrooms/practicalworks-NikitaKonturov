@@ -68,7 +68,7 @@ TEST(testCaseExem, testCheckBadFile)
 	std::ifstream fin("FEdf.faewfwe");
 	EXPECT_THROW(checkFile(fin), std::invalid_argument) << "Check file on found";
 
-	fin.open("/home/nikita/Desktop/practicalworks-NikitaKonturov/laboratory-task-10/src/files/testFile.txt");
+	fin.open("src/files/testFile.txt");
 	EXPECT_THROW(checkFile(fin), std::runtime_error) << "Check file on empty";
 
 	std::ifstream unopenFile;
@@ -77,7 +77,7 @@ TEST(testCaseExem, testCheckBadFile)
 
 TEST(testCaseExem, testCheckGoodFile)
 {
-	std::ifstream fin("/home/nikita/Desktop/practicalworks-NikitaKonturov/laboratory-task-10/src/files/Numbers.txt");
+	std::ifstream fin("src/files/Numbers.txt");
 	EXPECT_TRUE(checkFile(fin));
 }
 
@@ -166,7 +166,7 @@ TEST(testToUpper, badTest)
 
 TEST(testGetMainText, goodTest)
 {
-	std::string path = "/home/nikita/Desktop/practicalworks-NikitaKonturov/laboratory-task-10/src/files/testFileForGetMainText.txt";
+	std::string path = "src/files/testFileForGetMainText.txt";
 	std::string testText = "first line second line three line";
 	EXPECT_NO_THROW(getMainText(path));
 	EXPECT_STREQ(getMainText(path).c_str(), testText.c_str());
@@ -181,7 +181,7 @@ TEST(testGetMainText, badTest)
 
 TEST(testGetDelimiters, goodTest)
 {
-	std::string path = "/home/nikita/Desktop/practicalworks-NikitaKonturov/laboratory-task-10/src/files/testFileForGetMainText.txt";
+	std::string path = "src/files/testFileForGetMainText.txt";
 	std::string testText = "Hellow world";
 	EXPECT_NO_THROW(getDelimiters(path));
 	EXPECT_STREQ(getDelimiters(path).c_str(), testText.c_str());
@@ -261,7 +261,7 @@ TEST(testFillingArrOfStruct, badTest)
 
 TEST(testWriteArrOfStruct, goodTest)
 {
-	std::string path = "../files/testFileForWriteOfStruct.txt";
+	std::string path = "src/files/testFileForWriteOfStruct.txt";
 	std::ofstream fout(path);
 	Employee arr[3];
 	arr[0].surename = "Vadim";
@@ -287,7 +287,7 @@ TEST(testWriteArrOfStruct, goodTest)
 
 TEST(testWriteArrOfStruct, badTest)
 {
-	std::string path = "../files/testFileForWriteOfStruct.txt";
+	std::string path = "src/files/testFileForWriteOfStruct.txt";
 	Employee arr[3];
 	std:: ofstream fout(path);
 	EXPECT_THROW(writeArrOfStruct(fout, arr, -5), std::invalid_argument);
@@ -313,7 +313,7 @@ TEST(testCompForStruct, testToUpper)
 
 TEST(testWriteArrOfStructToBin, goodTest)
 {
-	std::string path = "/home/nikita/Desktop/practicalworks-NikitaKonturov/laboratory-task-10/src/files/testFileForBin.bin";
+	std::string path = "src/files/testFileForBin.bin";
 	std::ofstream fout(path, std::ios::binary);
 	Employee arr[3];
 	arr[0].surename = "Vadim";
@@ -327,7 +327,7 @@ TEST(testWriteArrOfStructToBin, goodTest)
 
 TEST(testWriteArrOfStructToBin, badTest)
 {
-	std::string path = "/home/nikita/Desktop/practicalworks-NikitaKonturov/laboratory-task-10/src/files/testFileForBin.bin";
+	std::string path = "src/files/testFileForBin.bin";
 	Employee arr[3];
 	std::ofstream fout(path, std::ios::binary);
 	EXPECT_THROW(writeArrOfStructToBin(fout, arr, -8), std::invalid_argument);
