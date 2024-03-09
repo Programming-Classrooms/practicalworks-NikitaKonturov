@@ -8,7 +8,7 @@
 
 #include <cstring>
 #include <algorithm>
-#include "src/funcs/funcs.hpp"
+#include "../funcs/funcs.hpp"
 
 
 int main()

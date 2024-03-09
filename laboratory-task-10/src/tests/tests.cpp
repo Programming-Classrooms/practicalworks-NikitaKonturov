@@ -1,7 +1,7 @@
 
 #include <stdexcept>
 #include <gtest/gtest.h>
-#include "src/funcs/funcs.hpp"
+#include "../funcs/funcs.hpp"
 
 
 TEST(testIsDigit, goodTest)
