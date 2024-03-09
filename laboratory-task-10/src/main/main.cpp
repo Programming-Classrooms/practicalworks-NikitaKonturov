@@ -88,10 +88,18 @@ int main()
 			delete[] allSurenames;
 		}
 	}
-	catch (std::exception& err) {
-		std::cerr << err.what() << std::endl;
+	catch (std::invalid_argument& err) {
+		std::cerr << "Invalid_argument "<< err.what() << std::endl;
 	}
-
+	catch (std::runtime_error& err) {
+		std::cerr << "Runtime_error "<< err.what() << std::endl;
+	}
+	catch (std::ios_base::failure& err) {
+		std::cerr << "Ios_base::failure "<< err.what() << std::endl;
+	}
+	catch (std::exception& err) {
+		std::cerr << "Any errors " << err.what() << std::endl;
+	}
 	return 0;
 
 }

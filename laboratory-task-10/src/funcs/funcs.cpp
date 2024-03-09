@@ -34,17 +34,22 @@ void universalQsort(T* arr, size_t left, size_t right, bool (*comp)(T, T))
 	}
 }
 
-bool checkFile(std::ifstream& file)
+bool checkFile(std::ifstream& file, std::string path)
 {
 	if (!file.good()) {
-		throw std::invalid_argument("File not found...");
+		std::string mes = "File not found... Path: ";
+		mes.append(path); 
+		throw std::invalid_argument(mes);
 	}
 	if (!file) {
-		throw std::ios_base::failure("Fileis bad...");
+		std::string mes = "File is bad... Path: ";
+		mes.append(path); 
+		throw std::ios_base::failure(mes);
 	}
 	if (file.peek() == EOF) {
-		file.close();
-		throw std::runtime_error("File is empti...");
+		std::string mes = "File is empti... Path: ";
+		mes.append(path); 
+		throw std::runtime_error(mes);
 	}
 	return true;
 }
@@ -54,7 +59,7 @@ std::string getMainText(std::string path)
 	std::ifstream fin(path);
 	std::string line, text;
 
-	if (checkFile(fin)) {
+	if (checkFile(fin, path)) {
 		std::getline(fin, line);
 		while (std::getline(fin, line)) {
 			text.append(line);
@@ -416,7 +421,7 @@ std::string getDelimiters(std::string path)
 	std::ifstream fin(path);
 	std::string delimiters{};
 
-	if (checkFile(fin)) {
+	if (checkFile(fin, path)) {
 		std::getline(fin, delimiters);
 		if (delimiters.size() == 0) {
 			throw std::invalid_argument("Delimiters must be not empty...");
