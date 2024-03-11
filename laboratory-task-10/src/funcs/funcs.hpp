@@ -19,7 +19,7 @@ void printArr(Employee* , int32_t);
 void printArr(std::string*, int32_t);
 void printArr(int32_t*, int32_t);
 std::string toUpper(std::string );
-bool checkFile(std::ifstream& );
+bool checkFile(std::ifstream&, std::string);
 std::string getMainText(std::string );
 void copySortArrays(int32_t*, int32_t*, int32_t);
 std::string getDelimiters(std::string);

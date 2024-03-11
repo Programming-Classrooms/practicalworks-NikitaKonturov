@@ -66,19 +66,22 @@ TEST(testUniQuickSort, badTest)
 TEST(testCaseExem, testCheckBadFile)
 {
 	std::ifstream fin("FEdf.faewfwe");
-	EXPECT_THROW(checkFile(fin), std::invalid_argument) << "Check file on found";
+	std::string path = "FEdf.faewfwe";
+	EXPECT_THROW(checkFile(fin, path), std::invalid_argument) << "Check file on found";
 
 	fin.open("src/files/testFile.txt");
-	EXPECT_THROW(checkFile(fin), std::runtime_error) << "Check file on empty";
+	path = "src/files/testFile.txt";
+	EXPECT_THROW(checkFile(fin, path), std::runtime_error) << "Check file on empty";
 
 	std::ifstream unopenFile;
-	EXPECT_ANY_THROW(checkFile(unopenFile)) << "Check file on bad";
+	EXPECT_ANY_THROW(checkFile(unopenFile, path)) << "Check file on bad";
 }
 
 TEST(testCaseExem, testCheckGoodFile)
 {
 	std::ifstream fin("src/files/Numbers.txt");
-	EXPECT_TRUE(checkFile(fin));
+	std::string path = "src/files/Numbers.txt";
+	EXPECT_TRUE(checkFile(fin, path));
 }
 
 TEST(testCompairStrings, goodTest)
