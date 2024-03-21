@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include "myString.hpp"
 
 
@@ -8,9 +9,11 @@
 // Конструктор по умолчанию
 myString::myString() : 
     size(0), 
-    capacity(0), 
-    pStr(new char[0]) 
-{}
+    capacity(1), 
+    pStr(new char[1]) 
+{
+    this->pStr[0] = '\0';
+}
 
 // Конструктор задания размера myString
 myString::myString(int64_t sizeToMyString) 
@@ -22,30 +25,30 @@ myString::myString(int64_t sizeToMyString)
     this->capacity = sizeToMyString * 2;
     this->size = sizeToMyString;
     this->pStr = new char[capacity];
-    this->pStr[size] = '/0';
+    for (size_t i = 0; i < this->capacity; ++i) {
+        this->pStr[i] = '\0';
+    }
 }
 
 // Конструктор копирования[пергрузка для myString]
 myString::myString(const myString &origin) 
 {
-    if (this->pStr == origin.pStr || origin.pStr == nullptr) {
+    if (origin.pStr == nullptr) {
         throw std::invalid_argument("Origin have a bad pointer...");
     }
 
     this->capacity = origin.capacity;
     this->size = origin.size;
     this->pStr = new char[this->capacity];
-    for (size_t i = 0; i < size; ++i) {
+    for (size_t i = 0; i <= size; ++i) {
         this->pStr[i] = origin.pStr[i];
     }
-
-    this->pStr[size] = '/0';
 }
 
 // Конструктор копирования[пергрузка для const char*]
 myString::myString(const char *origin) 
 {
-    if (this->pStr == origin || origin == nullptr) {
+    if (origin == nullptr) {
         throw std::invalid_argument("Origin have a bad pointer...");
     }
 
@@ -54,17 +57,19 @@ myString::myString(const char *origin)
     this->capacity = this->size * 2;
     this->pStr = new char[this->capacity];
 
-    for (size_t i = 0; i < size; ++i) {
+    for (size_t i = 0; i <= size; ++i) {
         this->pStr[i] = origin[i];
     }
-    this->pStr[this->size] = '/0';
 }
 
 // Конструктор перемещения[переприсваивает значение из origin в this(без копирования данных)]
 myString::myString(myString &&origin) 
 {
     this->size = origin.size;
+    origin.size = 0;
     this->capacity = origin.capacity;
+    origin.capacity = 0;
+    this->pStr = origin.pStr;
     origin.pStr = nullptr;
 }
 
@@ -72,7 +77,8 @@ myString::myString(myString &&origin)
 myString::~myString() 
 {
     if (this->pStr != nullptr) {
-      delete[] this->pStr;
+        delete[] this->pStr;
+        this->pStr = nullptr;
     }
 }
 
@@ -85,27 +91,27 @@ myString::~myString()
 /*========Метод добавления символа в конец строки=========*/
 void myString::push_back(char letter) 
 {
-    if(letter > 255 || letter < 0) {
+    if (letter < 0 || letter > 255) {
         throw std::out_of_range("Is no ASCII symbol...");
     }
 // Случай при котором строка заполнила всю предоставленную ей память 
-    if (this->size == this->capacity) {
+    if ((this->size + 1) == this->capacity) {
 // Если строка пустая и ей размер 0
         if (this->size == 0) {
-            this->capacity = 1 * 2;
+            this->capacity = 2;
+            delete[] this->pStr;
             this->pStr = new char[this->capacity];
-            //new(arr + i ) T(value); // placement new+ i ) T(value);
             this->pStr[this->size++] = letter;
-            this->pStr[this->size] = '/0';
+            this->pStr[this->size] = '\0';
         } 
         else {
-            char *tmp = new char[this->size * 2];
+            this->capacity = this->size * 2;
+            char *tmp = new char[this->capacity];
             for (size_t i = 0; i < this->size; ++i) {
                 tmp[i] = this->pStr[i];
             }
             tmp[this->size++] = letter;
-            tmp[this->size] = '/0';
-            this->capacity = this->size * 2;
+            tmp[this->size] = '\0';
             delete[] this->pStr;
             this->pStr = tmp;
         }
@@ -113,7 +119,7 @@ void myString::push_back(char letter)
 // Случай при котором ещё есть место для добавления нового символа
       else {
           this->pStr[this->size++] = letter;
-          this->pStr[size] = '/0';
+          this->pStr[size] = '\0';
     }
 }
 
@@ -134,11 +140,12 @@ void myString::append(const myString &source)
         }
 
         this->size += source.size;
-        this->pStr[size] = '/0';
+        this->pStr[size] = '\0';
     } 
     else {
 // Если добавление строки переведёт к переполнению выделенной памяти 
-        char *tmp = new char[(this->size + source.size) * 2];
+        this->capacity = (this->size + source.size) * 2;
+        char *tmp = new char[this->capacity];
         size_t j = 0;
         for (size_t i = 0; i < this->size; ++i, ++j) {
             tmp[j] = this->pStr[i];
@@ -150,14 +157,14 @@ void myString::append(const myString &source)
         this->size += source.size;
         delete[] this->pStr;
         this->pStr = tmp;
-        this->pStr[this->size] = '/0';
+        this->pStr[this->size] = '\0';
     }
 }
 
 // Метод добавления подстроки в конец[перегрузка для const char*] 
 void myString::append(const char *source) 
 {
-    if (this->pStr == nullptr || source == nullptr || this->pStr == source) {
+    if (source == nullptr || this->pStr == source) {
         throw std::logic_error("Bad pointers...");
     }
 
@@ -172,10 +179,11 @@ void myString::append(const char *source)
             this->pStr[j] = source[i];
         }
         this->size += sourceSize;
-        this->pStr[this->size] = '/0';
+        this->pStr[this->size] = '\0';
     }  
     else {
-        char *tmp = new char[(this->size + sourceSize) * 2];
+        this->capacity = (this->size + sourceSize) * 2;
+        char *tmp = new char[this->capacity];
         size_t j = 0;
         for (size_t i = 0; i < this->size; ++i, ++j) {
             tmp[j] = this->pStr[i];
@@ -186,8 +194,7 @@ void myString::append(const char *source)
         this->size += sourceSize;
         delete[] this->pStr;
         this->pStr = tmp;
-        this->capacity = this->size * 2;
-        this->pStr[this->size] = '/0';
+        this->pStr[this->size] = '\0';
     }
 }
 
@@ -197,7 +204,7 @@ void myString::append(const char *source)
 // Метод вставки подстроки[перегрузка для const char*]
 void myString::insert(const char *source, size_t pos) 
 {
-    if (this->pStr == nullptr || source == nullptr || this->pStr == source) {
+    if (source == nullptr || this->pStr == source) {
         throw std::logic_error("Bad pointers...");
     }
     if (pos > size) {
@@ -220,10 +227,9 @@ void myString::insert(const char *source, size_t pos)
         }
         delete[] tmp;
         this->size += sourceSize;
-        this->pStr[this->size] = '/0';
+        this->pStr[this->size] = '\0';
     } 
     else {
-
 // Случай при котором вставка приведёт к переполнению выделенной памяти
         char *result = new char[(this->size + sourceSize) * 2];
         size_t j = 0;
@@ -238,7 +244,7 @@ void myString::insert(const char *source, size_t pos)
         }
         delete[] this->pStr;
         this->pStr = result;
-        this->pStr[size] = '/0';
+        this->pStr[size] = '\0';
     }
 }
 
@@ -267,7 +273,7 @@ void myString::insert(const myString &source, size_t pos)
         this->size += source.size;
         this->capacity = this->size * 2;
         delete[] tmp;
-        this->pStr[this->size] = '/0';
+        this->pStr[this->size] = '\0';
     } 
     else {
         char *tmp = new char[(this->size + source.size) * 2];
@@ -281,7 +287,7 @@ void myString::insert(const myString &source, size_t pos)
             tmp[j] = this->pStr[i];
         }
         this->pStr = tmp;
-        this->pStr[this->size] = '/0';
+        this->pStr[this->size] = '\0';
     }
 }
 
@@ -395,12 +401,11 @@ void myString::replace(const char *source, size_t pos, size_t lenght)
 
 void myString::clear() 
 {
-    if (this->pStr != nullptr) {
-        this->size = 0;
-        this->capacity = 0;
-        delete[] this->pStr;
-        this->pStr = new char[0];
-    }
+    delete[] this->pStr;
+    this->pStr = new char[1];
+    this->pStr[0] = '\0';
+    this->size = 0;
+    this->capacity = 1;
 }
 
 
@@ -647,14 +652,7 @@ myString::operator double() const
 //Оператор вывода
 std::ostream &operator<<(std::ostream &out, myString &source) 
 {
-    if (source.pStr == nullptr) {
-      throw std::logic_error("The line was deleted...");
-    }
-
-    for (size_t i = 0; i < source.size; ++i) {
-      out << source.pStr[i];
-    }
-
+    out << source.pStr;
     return out;
 }
 

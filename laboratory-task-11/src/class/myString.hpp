@@ -1,9 +1,8 @@
-#pragma once
 #ifndef MYSTRING_HPP
 #define MYSTRING_HPP
 #include <cstring>
 #include <iostream>
-#include <math.h>
+#include <cmath>
 
 
 class myString 

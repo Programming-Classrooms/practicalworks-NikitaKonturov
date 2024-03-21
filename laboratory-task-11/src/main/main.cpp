@@ -15,9 +15,7 @@ int main()
         myString str2(str);
         myString str3(5);
         myString str4("!!!!");
-
-        std::cout << str << std::endl;
-         
+      
         str.push_back(' ');
 
         std::cout << str << std::endl;
