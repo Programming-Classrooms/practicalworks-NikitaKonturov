@@ -16,7 +16,7 @@ public:
     // Копирования
     Student(const Student&);
     // Деструктор
-    ~Student();
+    ~Student() = default;
 
 
 /*=========== Методы ===========*/

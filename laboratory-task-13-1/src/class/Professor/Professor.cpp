@@ -20,7 +20,6 @@ Professor::Professor(const Professor& source) : Professor(source.fullName, sourc
 // Деструктор 
 Professor::~Professor() 
 {
-    Professor::~Person();
     if(this->department != nullptr) {
         delete[] this->department;
         this->department = nullptr;
