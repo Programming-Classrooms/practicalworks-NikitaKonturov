@@ -4,6 +4,7 @@
 
 int main()
 {
+    try{
 /*================Демонстрация дроби================*/
 
     std::cout << "/*================Fraction demonstration================*/" << std::endl << std::endl;
@@ -181,8 +182,26 @@ int main()
     std::cout << " list2: ";
     list2.printList();
 
+    list2.editList();
+
+    list2.checkList([](int item){std::cout << item << " ";});
+
+    std::cout<< std::endl;
+
     list2.clear();
     std::cout << (list2.empty() ? " empty" : "  filled") << std::endl;
-
+    } 
+    catch(std::invalid_argument &err) {
+        std::cerr << "Invalid argument: " << err.what() << std::endl;
+    }
+    catch(std::logic_error &err) {
+        std::cerr << "Logic error: " << err.what() << std::endl;
+    }
+    catch(std::out_of_range &err) {
+        std::cerr << "Out of range: " << err.what() << std::endl;
+    }
+    catch(std::exception &err) {
+        std::cerr << err.what() << std::endl;
+    }
     return 0;
 }

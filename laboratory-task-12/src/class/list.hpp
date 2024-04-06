@@ -46,11 +46,15 @@ public:
 	bool empty() const; 
     // Получение размера списка
 	size_t getSize() const; 
+    // Просмотр списка с изменением всех его значений
+    void editList();
+    // Просмотр спискс вызовом callback функции
+    void checkList(void func(T)) const;
 	
 /*===========Операторы для работы со списком===========*/
 
     // Оператор индексации списка
-    T &operator[](size_t); 
+    T& operator[](size_t); 
 	// Оператор присваивания
     List& operator=(List<T>); 
     // Оператор слияния двух списков

@@ -5,12 +5,18 @@ template<typename T>
 struct List<T>::Node {
 	T item;
 	Node* next;
+	Node();
 };
 
 
 /*==========================================================*/
 /*====================Конструкторы==========================*/
 /*==========================================================*/
+
+// Конструктор по умолчанию для эллемента
+template<typename T>
+List<T>::Node::Node() : item(T()), next(nullptr)
+{}
 
 // Конструктор по умолчанию
 template<typename T>
@@ -35,18 +41,17 @@ List<T>::List(List<T> &source)
 template<typename T>
 List<T>::~List()
 {
-	if (this->root == nullptr) {
-		return;
+	Node* nextRoot = root;
+	while (this->root != nullptr) {
+		nextRoot = root->next;
+		delete root;
+		root = nextRoot;
 	}
-	for (size_t i = size - 1; i > 0; --i) {
-		this->deleteItem(i);
-	}
-	this->deleteItem(0);
 }
 
 
 /*==========================================================*/
-/*===========Методы для работы со списком===================*/
+/*==========М етоды для работы со списком ==================*/
 /*==========================================================*/
 
 // Добавление эллемента в конец списка
@@ -284,6 +289,28 @@ size_t List<T>::getSize() const
 	return this->size;
 }
 
+// Просмотр списка с изменением всех его значений
+template<typename T>
+void List<T>::editList()
+{
+	Node* node = this->root;
+	for (size_t i = 0; node != nullptr; ++i, node = node->next) {
+		std::cout << i << " Item has value: " << node->item << " Enter new value: ";
+		std::cin >> node->item;
+		std::cout << std::endl;
+	}
+}
+
+// Просмотр спискс вызовом callback функции
+template<typename T>
+void List<T>::checkList(void func(T)) const
+{
+	Node* node = this->root;
+	for (size_t i = 0; node != nullptr; ++i, node = node->next) {
+		func(node->item);	
+	}
+}
+
 
 /*==========================================================*/
 /*=====================Операторы============================*/
@@ -292,7 +319,7 @@ size_t List<T>::getSize() const
 
 // Оператор индексации списка
 template<typename T>
-T &List<T>::operator[](size_t pos)
+T& List<T>::operator[](size_t pos)
 {
 	if (pos >= this->size) {
 		throw std::out_of_range("The element at this position is undefined...");
