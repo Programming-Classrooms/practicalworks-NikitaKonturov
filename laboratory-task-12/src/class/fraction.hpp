@@ -4,7 +4,7 @@
 #include<iostream>
 
 
-class Fraction{
+class Fraction {
 private:
     int64_t numerator;
     int64_t denumerator;
@@ -42,6 +42,8 @@ public:
     // Опреатор сложения дробей
     Fraction operator+(const Fraction&) const;
     Fraction& operator+=(const Fraction&);
+    Fraction operator+(int64_t) const;
+    friend Fraction operator+(int64_t, const Fraction&); 
     // Оператор получения разности дробей
     Fraction operator-(const Fraction&) const;
     Fraction& operator-=(const Fraction&);

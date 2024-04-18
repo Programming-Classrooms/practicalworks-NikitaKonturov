@@ -40,10 +40,6 @@ Fraction::Fraction(int64_t sourceNumerator, int64_t sourceDenumerator)
 //Конструктор копирования
 Fraction::Fraction(const Fraction& origin) 
 {
-    if(&origin == this) {
-        throw std::logic_error("Self-assignment is not possible..."); 
-    }
-
     this->numerator = origin.numerator;
     this->denumerator = origin.denumerator;
 } 
@@ -113,10 +109,20 @@ Fraction Fraction::operator+(const Fraction& source) const
     return res;
 }
 
+Fraction Fraction::operator+(int64_t number) const
+{
+    return *this + Fraction(number); 
+}
+
 Fraction& Fraction::operator+=(const Fraction& source)
 {
     *this = *this + source;
     return *this;
+}
+
+Fraction operator+(int64_t lhs, const Fraction& rhs) 
+{
+    return rhs + lhs;
 }
 
 // Оператор получения разности дробей
@@ -248,8 +254,7 @@ Fraction Fraction::operator++(int)
 //Префиксный
 Fraction& Fraction::operator++()
 {
-    *this = *this + Fraction(1, 1);
-    this->reduction();
+    this->numerator += this->denumerator;
     return *this;
 }
 
@@ -259,7 +264,6 @@ Fraction& Fraction::operator++()
 Fraction& Fraction::operator--()
 {
     *this = *this - Fraction(1, 1);
-    this->reduction();
     return *this;
 }
 
@@ -279,6 +283,9 @@ Fraction Fraction::operator--(int)
 //Оператор вывода
 std::ostream& operator<<(std::ostream &out, const Fraction& source)
 {
+    if(source.numerator < 0 && source.denumerator < 0){
+        out << source.numerator << "/" << -source.denumerator;
+    }
     out << source.numerator << "/" << source.denumerator;
     return out;
 }

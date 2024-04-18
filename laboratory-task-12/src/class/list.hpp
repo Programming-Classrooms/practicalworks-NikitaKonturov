@@ -9,6 +9,7 @@ private:
 	struct Node;
 	Node* root;
 	size_t size;
+    Node* last;
 
 public:
 

@@ -24,6 +24,7 @@ List<T>::List()
 {	
 	this->size = 0;
 	this->root = nullptr;
+	this->last = nullptr;
 }
 
 // Конструктор копирования
@@ -59,20 +60,16 @@ template<typename T>
 void List<T>::pushBack(const T& item) 
 {
 	if (this->root == nullptr) {
-		this->root = new Node;
+		this->root = new Node();
 		this->root->item = item;
 		this->root->next = nullptr;
+		this->last = this->root;
 		++size;
 	}
 	else {
-		Node* node = root;
-		while (node->next != nullptr) {
-			node = node->next;
-		}
-		node->next = new Node;
-		node = node->next;
-		node->item = item;
-		node->next = nullptr;
+		this->last->next = new Node();
+		this->last = last->next;
+		this->last->item = item;
 		++size;
 	}
 }
@@ -85,6 +82,7 @@ void List<T>::pushFront(const T& item)
 		this->root = new Node;
 		this->root->item = item;
 		this->root->next = nullptr;
+		this->last = this->root;
 		++size;
 	}
 	else {
