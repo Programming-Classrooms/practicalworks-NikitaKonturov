@@ -62,7 +62,6 @@ void List<T>::pushBack(const T& item)
 	if (this->root == nullptr) {
 		this->root = new Node();
 		this->root->item = item;
-		this->root->next = nullptr;
 		this->last = this->root;
 		++size;
 	}
@@ -104,11 +103,21 @@ void List<T>::deleteItem(size_t pos)
 	if (this->root == nullptr || this->root->next == nullptr) {
 		return;
 	}
+
 	Node* node = root;
 	if (pos == 0) {
 		Node* tempRoot = this->root->next;
 		delete this->root;
 		this->root = tempRoot;
+		--size;
+	} 
+	else if(this->size - 1 == pos) {
+		for(size_t i = 0; i < pos - 1; ++i) {
+			node = node->next;
+		}
+		this->last = node;
+		delete node->next;
+		this->last->next = nullptr;
 		--size;
 	}
 	else
@@ -162,6 +171,11 @@ void List<T>::insert(size_t pos, T item)
 		this->root->next = tempNode;
 		++size;
 	}
+	else if(this->size == pos) {
+		this->last->next = new Node;
+		this->last = last->next;
+		this->last->item = item;
+	}
 	else {
 		Node* node = this->root;
 		for (size_t i = 0; i < pos - 1; ++i) {
@@ -181,7 +195,7 @@ template<typename T>
 void List<T>::merge(List<T>& source, size_t pos)
 {
 	if (source.empty()) {
-		throw std::logic_error("source is empty...");
+		throw std::logic_error("Source is empty...");
 	}
 	if (pos > size) {
 		throw std::out_of_range("Going beyond the list...");
@@ -191,10 +205,10 @@ void List<T>::merge(List<T>& source, size_t pos)
 		Node* tempNode = this->root;
 		this->root = new Node;
 		Node* node = this->root;
-		for (size_t i = 0; i < source.getSize(); ++i) {
+		for (size_t i = 0; i < source.size; ++i) {
 			node->item = source[i];
 			node->next = new Node;
-			if (i == source.getSize() - 1) {
+			if (i == source.size - 1) {
 				break;
 			}
 			node = node->next;
@@ -207,54 +221,56 @@ void List<T>::merge(List<T>& source, size_t pos)
 		for (size_t i = 0; i < pos - 1; ++i) {
 			node = node->next;
 		}
+
 		tempNode = node->next;
 		node->next = new Node;
-		for (size_t i = 0; i < source.getSize(); ++i) {
+		Node* sourceNode = source.root;
+		while(sourceNode != nullptr) {
 			node = node->next;
-			node->item = source[i];
-			if (i == source.getSize() - 1) {
-				break;
-			}
+			node->item = sourceNode->item;
 			node->next = new Node;
+			sourceNode = sourceNode->next;
 		}
 		node->next = tempNode;
+		if (tempNode == nullptr) {
+			this->last = node;
+		}
 	}
-	this->size += source.getSize();
+	this->size += source.size;
 }
 
 // Инвертирование списка 
 template<typename T>
 void List<T>::revers()
 {
-	Node* firstNode = this->root;
-	Node* secondNode = this->root;
-	for (size_t i = 0, j = this->size - 1; i < j; ++i, --j) {
-		firstNode = this->root;
-		secondNode = this->root;
-		for (size_t k = 0; k < i; ++k) {
-			firstNode = firstNode->next;
-		}
-		for (size_t k = 0; k < j; ++k) {
-			secondNode = secondNode->next;
-		}
-		T tempItem = firstNode->item;
-		firstNode->item = secondNode->item;
-		secondNode->item = tempItem;
+	Node* node = this->root;
+
+	for (size_t j = 1; j < this->size; ++j) {
+		node = this->root;
+		for(size_t i = 0; i < (this->size - j - 1); ++i){
+			node = node->next;
+		}	
+		node->next->next = node;
 	}
+
+	node = this->root;
+	this->root = this->last;
+	this->last = node;
+	this->last->next = nullptr;
 }
 
 // Очистка списка
 template<typename T>
 void List<T>::clear()
 {
-	if (this->root == nullptr) {
-		return;
+	Node* node = this->root;
+	while (this->root != nullptr) {
+		node = this->root;
+		this->root = node->next;
+		delete node;	
 	}
-	for (size_t i = this->size - 1; i > 0; --i) {
-		deleteItem(i);
-	}
-	deleteItem(0);
 	this->root = nullptr;
+	this->last = nullptr;
 	this->size = 0;
 }
 

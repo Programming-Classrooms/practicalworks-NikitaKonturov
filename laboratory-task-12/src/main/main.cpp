@@ -132,7 +132,6 @@ int main()
 
     list1.printList();
     list2.printList(); 
-
     list1.pushBack(78);
     list1.pushBack(45);
     list2.pushFront(89);
