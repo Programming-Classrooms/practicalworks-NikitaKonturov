@@ -28,7 +28,7 @@ CQueue<char*>::Item::~Item()
 }
 
 template<typename T>
-CQueue<T>::Item& CQueue<T>::Item::operator=(const CQueue<T>::Item& source)
+typename CQueue<T>::Item& CQueue<T>::Item::operator=(const CQueue<T>::Item& source)
 {
     if (this == &source) {
         throw std::invalid_argument("Self-education...");
@@ -54,7 +54,7 @@ CQueue<char*>::Item& CQueue<char*>::Item::operator=(const CQueue<char*>::Item& s
 }
 
 template<typename T>
-CQueue<T>::Item& CQueue<T>::Item::operator=(T source)
+typename CQueue<T>::Item& CQueue<T>::Item::operator=(T source)
 {
     this->value = source;
     return *this;

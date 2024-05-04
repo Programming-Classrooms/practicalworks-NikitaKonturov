@@ -45,14 +45,14 @@ TDeque<char*>::TDequeItem::~TDequeItem()
 }
 
 template<typename Tinfo>
-TDeque<Tinfo>::TDequeItem& TDeque<Tinfo>::TDequeItem::operator=(Tinfo& source)
+typename TDeque<Tinfo>::TDequeItem& TDeque<Tinfo>::TDequeItem::operator=(Tinfo& source)
 {
     this->info = source;
     return *this;
 }
 
 template<>
-TDeque<char*>::TDequeItem& TDeque<char*>::TDequeItem::operator=(char*& source)
+typename TDeque<char*>::TDequeItem& TDeque<char*>::TDequeItem::operator=(char*& source)
 {
     if (this->info != nullptr) {
         delete[] this->info;
@@ -65,14 +65,14 @@ TDeque<char*>::TDequeItem& TDeque<char*>::TDequeItem::operator=(char*& source)
 }
 
 template<typename Tinfo>
-TDeque<Tinfo>::TDequeItem& TDeque<Tinfo>::TDequeItem::operator=(const TDequeItem& source)
+typename TDeque<Tinfo>::TDequeItem& TDeque<Tinfo>::TDequeItem::operator=(const TDeque<Tinfo>::TDequeItem& source)
 {
     this->info = source;
     return *this;
 }
 
 template<>
-TDeque<char*>::TDequeItem& TDeque<char*>::TDequeItem::operator=(const TDequeItem& source)
+TDeque<char*>::TDequeItem& TDeque<char*>::TDequeItem::operator=(const TDeque<char*>::TDequeItem& source)
 {
     if (this->info != nullptr) {
         delete[] this->info;
@@ -176,7 +176,7 @@ void TDeque<Tinfo>::DeleteItem(TDequeItem* item)
 
 // Указатель на эллемент с заданным индексом
 template<typename Tinfo>
-TDeque<Tinfo>::TDequeItem* TDeque<Tinfo>::PtrByIndex(size_t index) const
+typename TDeque<Tinfo>::TDequeItem* TDeque<Tinfo>::PtrByIndex(size_t index) const
 {
     if(index >= capasity) {
         throw std::out_of_range("Index must be within the capasity limits...");
