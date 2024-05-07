@@ -4,26 +4,8 @@
 /*==================== Конструторы =====================*/
 /*======================================================*/
 
-Train::Train(size_t sTrainNumber, std::string sDestonation, double sDepartureTime, double sTravelTime, trainType sTypeOfTrain) : trainNumber(sTrainNumber), destination(sDestonation), typeOfTrain(sTypeOfTrain)
-{
-    if (sTrainNumber == 0) {
-        throw std::invalid_argument("Train number must have natural number...");
-    }
-    if (sDepartureTime < 0.0 || sTravelTime < 0.0) {
-        throw std::invalid_argument("Time must be unless 0.0...");
-    }
-    if (sDepartureTime > 23.59) {
-        throw std::invalid_argument("Time must be less 23.59...");
-    }
-    if((sDepartureTime - static_cast<int>(sDepartureTime)) > 0.59) {
-        throw std::invalid_argument("Munites must be less that 59...");
-    }
-    if((sTravelTime - static_cast<int>(sTravelTime)) > 0.59) {
-        throw std::invalid_argument("Munites must be less that 59...");
-    }
-    this->travelTime = sTravelTime;
-    this->departureTime = sDepartureTime;
-}
+Train::Train(size_t sTrainNumber, std::string sDestonation, Time sDepartureTime, Time sTravelTime, trainType sTypeOfTrain) : trainNumber(sTrainNumber), destination(sDestonation), typeOfTrain(sTypeOfTrain)
+{}
 
 
 /*======================================================*/
@@ -43,30 +25,13 @@ void Train::setDestination(std::string sDestination)
     this->destination = sDestination;
 }
 
-void Train::setDepartureTime(double sDepartureTime)
+void Train::setDepartureTime(Time sDepartureTime)
 {
-    if (sDepartureTime < 0.0) {
-        throw std::invalid_argument("Time must be unless 0.0");
-    }
-    if (sDepartureTime > 23.59) {
-        throw std::invalid_argument("Time must be less 23.59");
-    }
-    if((sDepartureTime - static_cast<int>(sDepartureTime)) > 0.59) {
-        throw std::invalid_argument("Munites must be less that 59");
-    }
-
     this->departureTime = sDepartureTime;
 }
 
-void Train::setTravelTime(double sTravelTime)
+void Train::setTravelTime(Time sTravelTime)
 {
-    if (sTravelTime < 0.0) {
-        throw std::invalid_argument("Time must be unless 0.0");
-    }
-    if((sTravelTime - static_cast<int>(sTravelTime)) > 0.59) {
-        throw std::invalid_argument("Munites must be less that 59");
-    }
-
     this->travelTime = sTravelTime;
 }
 
@@ -93,12 +58,12 @@ std::string Train::getDestination() const
 
 double Train::getDepartureTime() const 
 {
-    return this->departureTime;
+    return this->departureTime.getTime();
 }
 
 double Train::getTravelTime() const
 {
-    return this->travelTime;
+    return this->travelTime.getTime();
 }
 
 trainType Train::getTypeOfTrain() const
@@ -119,4 +84,51 @@ std::ostream& operator<<(std::ostream& out, const Train& source)
     out << "Время отправления: " << std::setprecision(4) << source.departureTime << std::endl;
     out << "Впемя в пути: " << std::setprecision(4) << source.travelTime << std::endl;
     return out;
+}
+
+std::istream& operator>>(std::istream& in, Train& source)
+{
+    size_t numberOfTrain = 0;
+    std::string destination = "";
+    std::string typeOfTrain = "Passenger";
+    Time departureTime = {0, 0};
+    Time travelTime = {0, 0};
+
+    in >> numberOfTrain;
+    if (in.fail()) {
+        in.setstate(std::ios_base::failbit);
+        return in;
+    }
+    
+    in >> destination;
+    if (in.fail()) {
+        in.setstate(std::ios_base::failbit);
+        return in;
+    }
+
+    in >> typeOfTrain;
+    if (in.fail() || typeOfTrain != "Passenger" && typeOfTrain != "Express") {
+        in.setstate(std::ios_base::failbit);
+        return in;
+    }
+
+    in >> departureTime;
+    if (in.fail()) {
+        in.setstate(std::ios_base::failbit);
+        return in;
+    }
+
+    in >> travelTime;
+    if (in.fail()) {
+        in.setstate(std::ios_base::failbit);
+        return in;
+    }
+
+    source.trainNumber = numberOfTrain;
+    source.destination = destination;
+    source.typeOfTrain = (typeOfTrain == "Passenger" ? trainType::Passenger : trainType::Express);
+    source.departureTime = departureTime;
+    source.travelTime = travelTime;    
+
+    return in;
 }

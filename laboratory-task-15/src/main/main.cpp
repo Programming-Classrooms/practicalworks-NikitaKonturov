@@ -9,13 +9,13 @@
 int main()
 {
     try {
- //   secondTask();
-    thirdTask();
-    fourthTask();
-    std::string pathToTrains = "src/resource/Trains.txt";
-    std::string pathToStudents = "src/resource/Student.txt";
-    fiveTask(pathToStudents);
-    sixTask(pathToTrains);
+        secondTask();
+        thirdTask();
+        fourthTask();
+        std::string pathToTrains = "src/resource/Trains.txt";
+        std::string pathToStudents = "src/resource/Student.txt";
+        fiveTask(pathToStudents);
+        sixTask(pathToTrains);
     }
     catch(std::runtime_error& err) {
         std::cerr << "Runtime error: " << err.what() << std::endl;

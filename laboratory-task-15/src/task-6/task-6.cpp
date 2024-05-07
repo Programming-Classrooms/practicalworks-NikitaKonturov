@@ -3,46 +3,11 @@
 
 void readFile(std::vector<Train>& vectorWithTrain, std::ifstream& fin) 
 {
-    size_t trainNumber = 1;
-    std::string destination = "";
-    //trainType typeOfTrain = trainType::Passenger;
-    std::string readTypeOfTrain = "Passenger";
-    double departureTime = 0.0;
-    double travelTime = 0.0;
-
-    while(fin >> trainNumber) {
-        if(fin.fail()) {
-            break;
-        }
-        fin >> destination;
-        if (fin.fail()) {
-            break;
-        }
-        fin >> readTypeOfTrain;
-        if (fin.fail()) {
-            break;
-        }
-        fin >> departureTime;
-        if (fin.fail()) {
-            break;
-        }
-        fin >> travelTime;
-        if (fin.fail()) {
-            break;
-        }
-        
-        if (readTypeOfTrain == "Passenger") {
-            vectorWithTrain.push_back(Train(trainNumber, destination, departureTime, travelTime, trainType::Passenger));
-        }
-        else if(readTypeOfTrain == "Express") {
-            vectorWithTrain.push_back(Train(trainNumber, destination, departureTime, travelTime, trainType::Express));
-        }
-        else {
-            break;
-        }
+    Train source;
+    while(fin >> source) {
+        vectorWithTrain.push_back(source);    
     }
 }
-
 
 void sixTask(std::string& path)
 {
@@ -62,18 +27,20 @@ void sixTask(std::string& path)
     std::cout << "Вектор отсортированный по дате отправления:" << std::endl;
     std::copy(trainVector.begin(), trainVector.end(), std::ostream_iterator<Train>(std::cout, "###########################################\n"));
 
-    double first =  0.0;
-    double second = 0.0;
+    Time first =  {0, 0};
+    Time second = {0, 0};
     std::cout << "Введите нижнию и верхнюю границы времени отправления: ";
     std::cin >> first >> second;
     if(first > second) {
         std::swap(first, second);
     }
+
     std::cout << "Поезда отпраляющиеся в этот промежуток времени: " << std::endl;
     std::copy_if(trainVector.begin(), trainVector.end(), std::ostream_iterator<Train>(std::cout, "###########################################\n"), [first, second](const Train& item){
         double departureTime = item.getDepartureTime();
-        return departureTime > first && departureTime < second;
+        return departureTime > first.getTime() && departureTime < second.getTime();
     });
+
     std::cout << std::endl;
     std::string destination = "";  
     std::cout << "Введите пункт назначения: ";
@@ -82,6 +49,7 @@ void sixTask(std::string& path)
     std::copy_if(trainVector.begin(), trainVector.end(), std::ostream_iterator<Train>(std::cout, "###########################################\n"), [destination](const Train& item){
         return destination == item.getDestination();
     });
+    
     std::cout << std::endl;
     std::cout << "Все скорые поезда напрвляющиеся в заданный пункт назначения: " << std::endl;
     std::copy_if(trainVector.begin(), trainVector.end(), std::ostream_iterator<Train>(std::cout, "###########################################\n"), [destination](const Train& item){
