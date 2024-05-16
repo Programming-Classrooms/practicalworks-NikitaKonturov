@@ -6,26 +6,26 @@ void checkPath(std::filesystem::path pathToFile)
 {
     pathToFile = std::filesystem::absolute(pathToFile);
     if (!std::filesystem::exists(pathToFile)) {
-        throw std::invalid_argument(std::format("Filesysteam object not exist! Path: {}", pathToFile.string()));
+        throw std::invalid_argument(std::string("Filesysteam object not exist! Path:").append(pathToFile.string()));
     }
     if (!std::filesystem::is_regular_file(pathToFile)) {
-        throw  std::invalid_argument(std::format("Filesysteam object is not regular file! Path: {}", pathToFile.string()));
+        throw  std::invalid_argument(std::string("Filesysteam object is not regular file! Path: ").append(pathToFile.string()));
     }
     if (!pathToFile.has_extension() || pathToFile.extension() != std::filesystem::path(".txt")) {
-        throw std::invalid_argument(std::format("File must has extension .txt! {}", pathToFile.string()));
+        throw std::invalid_argument(std::string("File must has extension .txt! ").append(pathToFile.string()));
    }
 }
 
 void checkFile(std::ifstream& fin, std::string path)
 {
     if(!fin) {
-        throw std::invalid_argument(std::format("File is bad. Path: {}", path));
+        throw std::invalid_argument(std::string("File is bad. Path: ").append(path));
     }
     if(!fin.is_open()) {
-        throw std::invalid_argument(std::format("File was not opened. Path {}", path));
+        throw std::invalid_argument(std::string("File was not opened. Path").append(path));
     }
     if(fin.peek() == EOF) {
-        throw std::invalid_argument(std::format("File is empty. Path {}", path));
+        throw std::invalid_argument(std::string("File is empty. Path ").append(path));
     }
 }
 
