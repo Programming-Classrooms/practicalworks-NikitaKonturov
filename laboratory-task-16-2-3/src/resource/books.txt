@@ -1,0 +1,19 @@
+101;Orwell, George;1984;1949
+202;Hemingway, Ernest;The Old Man and the Sea;1952
+303;Atwood, Margaret;The Handmaid's Tale;1985
+404;Dickens, Charles;Great Expectations;1861
+505;Austen, Jane;Pride and Prejudice;1813
+606;Fitzgerald, F. Scott;The Great Gatsby;1925
+707;Tolkien, J.R.R.;The Hobbit;1937
+808;Rowling, J.K.;Harry Potter and the Chamber of Secrets;1998
+909;Tolstoy, Leo;War and Peace;1869
+111;Murakami, Haruki;Norwegian Wood;1987
+222;Dostoevsky, Fyodor;Crime and Punishment;1866
+333;Bronte, Charlotte;Jane Eyre;1847
+444;Steinbeck, John;Of Mice and Men;1937
+555;Austen, Jane;Emma;1815
+666;Shakespeare, William;Romeo and Juliet;1597
+777;Orwell, George;Animal Farm;1945
+888;Bradbury, Ray;Fahrenheit 451;1953
+999;Nabokov, Vladimir;Lolita;1955
+454;Konturov;The Hobbit;2024
