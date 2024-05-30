@@ -5,7 +5,7 @@
 /*===========================================================*/
 
 
-Bus::Bus() : busRoute(0), driver(""), busNumber(0), marckBus(0) 
+Bus::Bus() : busRoute(0), driver(""), busNumber(0), marckBus("") 
 {}
 
 Bus::Bus(const Bus &source) : busRoute(source.busRoute), 
@@ -26,7 +26,7 @@ Bus::Bus(uint8_t sBusRoute, std::string sDriver, uint8_t sBusNumber, std::string
 
 std::ostream &operator<<(std::ostream &out, const Bus &source)
 {
-    out << source.busRoute << " " << source.driver << '\t' << source.busNumber << " " << source.marckBus;
+    out << static_cast<int>(source.busRoute) << " " << source.driver << std::setw(4) << static_cast<int>(source.busNumber) << " " << source.marckBus;
 
     return out;
 }

@@ -2,6 +2,7 @@
 #define BUS_HPP
 #include<iostream>
 #include<stdint.h>
+#include<iomanip>
 #include<regex>
 
 
