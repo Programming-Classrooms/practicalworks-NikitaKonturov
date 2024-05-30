@@ -38,6 +38,42 @@ int main()
         std::copy(listRoute.begin(), listRoute.end(), std::ostream_iterator<uint16_t>(std::cout, " "));
         std::cout << std::endl;
 
+        std::cout << "Введите маршрут: ";
+        uint16_t numberRoute;
+        std::cin >> numberRoute;
+        std::cout << std::endl; 
+
+        bool noRoute = true;
+        std::cout << "Список автобусов с указанным маршрутом: " << std::endl;
+        for(const auto bus : busMap) {
+            if(bus.second.getBusRoute() == numberRoute) {
+                std::cout << bus.second << std::endl;
+                noRoute = false;
+            }
+        }
+
+        if(noRoute) {
+            std::cout << "Маршрут не найден!" << std::endl;
+        }        
+
+        std::cout << "Введите номер автоббуса который хотите удалить: ";
+        uint16_t busNumber;
+        std::cin >> busNumber;
+        std::cout << std::endl; 
+        
+        busMap.erase(busNumber);
+
+        std::cout << "Cписок автобусов после удаления" << std::endl;
+
+        for(const auto bus : busMap) {
+            std::cout << bus.second << std::endl;
+        }
+
+        std::multimap<uint8_t, Bus> routeMap;
+
+        for(const auto bus : busMap) {
+            routeMap.insert(std::pair<uint8_t, Bus>(bus.second.getBusRoute(), bus.second));
+        }
         
 
 
