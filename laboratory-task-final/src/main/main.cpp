@@ -75,10 +75,25 @@ int main()
             routeMap.insert(std::pair<uint8_t, Bus>(bus.second.getBusRoute(), bus.second));
         }
         
-
-
-
-
+        uint16_t maxRoute;
+        size_t size = 0;
+        size_t maxSize = 0;
+        for (const auto route : routeMap) {
+            size = 0;
+            auto lower = routeMap.lower_bound(route.first);
+            auto upper = routeMap.upper_bound(route.first);
+            while (lower != upper) {
+                ++size;
+                ++lower;
+            }
+            if (size > maxSize) {
+                maxSize = size;
+                maxRoute = route.first;
+            }
+        }
+        
+        std::cout << "Маршрут с максимальным количеством автобусов: " << std::endl;
+        std::cout << maxRoute << std::endl;
     }
     catch(std::invalid_argument &err) {
         std::cerr << "Invalid argument: " << err.what() << std::endl;
