@@ -110,5 +110,8 @@ int main()
     catch(std::invalid_argument &err) {
         std::cerr << "Invalid argument: " << err.what() << std::endl;
     }
+    catch(std::exception &err) {
+        std::cerr << "Anny errors: " << err.what() << std::endl;
+    }
     return 0;
 }
