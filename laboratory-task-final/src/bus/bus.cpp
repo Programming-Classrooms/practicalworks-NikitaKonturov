@@ -5,15 +5,18 @@
 /*===========================================================*/
 
 
+// По умолчанию
 Bus::Bus() : busRoute(0), driver(""), busNumber(0), marckBus("") 
 {}
 
+// Копирования
 Bus::Bus(const Bus &source) : busRoute(source.busRoute), 
                               driver(source.driver), 
                               busNumber(source.busNumber), 
                               marckBus(source.marckBus) 
 {}
 
+// С параметрами
 Bus::Bus(uint8_t sBusRoute, std::string sDriver, uint8_t sBusNumber, std::string sMarckBus) : busRoute(sBusRoute), 
                                                                                               driver(sDriver), 
                                                                                               busNumber(sBusNumber), 
@@ -24,6 +27,7 @@ Bus::Bus(uint8_t sBusRoute, std::string sDriver, uint8_t sBusNumber, std::string
 /*======================== Операторы ========================*/
 /*===========================================================*/
 
+// Вывод
 std::ostream &operator<<(std::ostream &out, const Bus &source)
 {
     out << static_cast<int>(source.busRoute) << " " << source.driver << std::setw(4) << static_cast<int>(source.busNumber) << " " << source.marckBus;
@@ -31,11 +35,12 @@ std::ostream &operator<<(std::ostream &out, const Bus &source)
     return out;
 }
 
+// Ввод
 std::istream &operator>>(std::istream &in, Bus &source)
 {
     std::string line;
     std::getline(in, line);
-    if (line.empty()) {
+    if (line.empty()) { // Фишка позволяющая не кидать исключения а устанавливать поток в fail
         in.setstate(std::ios_base::failbit);
         return in;
     }   
@@ -69,7 +74,7 @@ std::istream &operator>>(std::istream &in, Bus &source)
         return in;
     }
 
-    try{
+    try{ // необходим для проверки на коректное значение номера
         source.busNumber = std::stoi(*word);
     }
     catch(std::invalid_argument &err) {

@@ -26,6 +26,7 @@ void readFile(std::string path, std::vector<Bus>& source)
     }
 }
 
+// Заполнение map из vector
 void fillingMap(const std::vector<Bus> &resource, std::map<uint8_t, Bus> &source)
 {
     for (const auto bus : resource) {

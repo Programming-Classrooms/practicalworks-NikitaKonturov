@@ -6,15 +6,21 @@
 #include "../funcs/funcs.hpp"
 
 
+/*========================================*/
+/*====== Плаки-плаки или нормалдаки? =====*/
+/*========================================*/
+
 
 int main()
 {
     try {
         std::vector<Bus> buss;
         readFile("src/data/buses.txt", buss);
+    // Вывод в одну строку
         std::cout << "Список автобусов" << std::endl;
         std::copy(buss.begin(), buss.end(), std::ostream_iterator<Bus>(std::cout, "\n"));
 
+    // Сортировка
         std::sort(buss.begin(), buss.end(), [](const Bus& first, const Bus& second){
             if(first.getBusNumber() == second.getBusNumber()) {
                 return first.getBusRoute() < second.getBusRoute();
@@ -26,9 +32,11 @@ int main()
         std::cout << "Отсортированный список автобусов" << std::endl;
         std::copy(buss.begin(), buss.end(), std::ostream_iterator<Bus>(std::cout, "\n"));
 
+    // Переносим вектор в map
         std::map<uint8_t, Bus> busMap; 
         fillingMap(buss, busMap);
 
+    // Создаём множество маршрутов
         std::set<uint16_t> listRoute;
         for(const auto bus : busMap) {
             listRoute.insert(bus.second.getBusRoute());
@@ -43,6 +51,7 @@ int main()
         std::cin >> numberRoute;
         std::cout << std::endl; 
 
+    // Выборка по отдельному маршруту
         bool noRoute = true;
         std::cout << "Список автобусов с указанным маршрутом: " << std::endl;
         for(const auto bus : busMap) {
@@ -56,6 +65,7 @@ int main()
             std::cout << "Маршрут не найден!" << std::endl;
         }        
 
+    // Удаляем автобус
         std::cout << "Введите номер автоббуса который хотите удалить: ";
         uint16_t busNumber;
         std::cin >> busNumber;
@@ -69,12 +79,14 @@ int main()
             std::cout << bus.second << std::endl;
         }
 
+    // Пересоздаём map на multimap для простоты подсчёта количесива автобусов в одном маршруте(ключ номер маршрута)
         std::multimap<uint8_t, Bus> routeMap;
 
         for(const auto bus : busMap) {
             routeMap.insert(std::pair<uint8_t, Bus>(bus.second.getBusRoute(), bus.second));
         }
         
+    //  Ищем маршрут с максимальным количеством автобусов
         uint16_t maxRoute;
         size_t size = 0;
         size_t maxSize = 0;
