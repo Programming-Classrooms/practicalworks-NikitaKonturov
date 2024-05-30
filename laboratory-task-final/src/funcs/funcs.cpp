@@ -25,3 +25,10 @@ void readFile(std::string path, std::vector<Bus>& source)
         source.push_back(temp);
     }
 }
+
+void fillingMap(const std::vector<Bus> &resource, std::map<uint8_t, Bus> &source)
+{
+    for (const auto bus : resource) {
+        source.insert(std::pair<uint8_t, Bus>(bus.getBusNumber(), bus));        
+    }
+}
