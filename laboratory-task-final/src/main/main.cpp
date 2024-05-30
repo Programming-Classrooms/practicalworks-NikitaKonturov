@@ -1,6 +1,7 @@
+#include<map>
+#include<set>
 #include<iterator>
 #include<algorithm>
-#include<map>
 #include "../bus/bus.hpp"
 #include "../funcs/funcs.hpp"
 
@@ -27,6 +28,18 @@ int main()
 
         std::map<uint8_t, Bus> busMap; 
         fillingMap(buss, busMap);
+
+        std::set<uint16_t> listRoute;
+        for(const auto bus : busMap) {
+            listRoute.insert(bus.second.getBusRoute());
+        }
+
+        std::cout << "Список различных маршрутов: ";
+        std::copy(listRoute.begin(), listRoute.end(), std::ostream_iterator<uint16_t>(std::cout, " "));
+        std::cout << std::endl;
+
+        
+
 
 
 
