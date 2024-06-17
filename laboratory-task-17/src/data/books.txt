@@ -1,0 +1,8 @@
+War and Peace;Leo Tolstoy;1200;5
+Introduction to Algorithms;Thomas H. Cormen,Charles E. Leiserson,Ronald L. Rivest,Clifford Stein;5000;2
+The Hitchhiker's Guide to the Galaxy;Douglas Adams;750;8
+Effective Modern C++;Scott Meyers;1500;1
+Clean Code;Robert C. Martin;3000;3
+The Pragmatic Programmer;Andrew Hunt,David Thomas;2500;4
+Harry Potter and the Philosopher's Stone;J.K. Rowling;2000;7
+My Book;Author Name;0;0
